@@ -20,17 +20,26 @@
     <div class="container-main">
         <aside class="diseases">
             <div class="filter block">
-                <input type="text" class="search" placeholder="Введите данные для фильтрации">
-    
-                <button class="btn">Доп.фильтры</button>
+                
+            <div>
+                <input type="text" class="input-search" placeholder="Введите заболевание">
+                <button class="btn btn-search">Найти</button>
+            </div>
+
+                <button class="btn btn-filter">Доп.фильтры</button>
                 <div class="additional-filters">
+                    <span>Возраст: </span>
                     <label>
-                        <input type="checkbox" class="age">
-                        Возраст
+                        с
+                        <input type="text" class="age">
                     </label>
                     <label>
-                        <input type="checkbox" class="sex">
+                        до
+                        <input type="text" class="age">
+                    </label>
+                    <label>
                         Пол
+                        <input type="checkbox" class="sex">
                     </label>
                 
                     <ul>
@@ -93,9 +102,9 @@
             </div>
             <div class="month" id="slider-range"></div>
 
-            <div class="svg">
+            <canvas class="svg">
 
-            </div>
+            </canvas>
         </div>
     </div>
     <footer>

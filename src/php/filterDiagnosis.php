@@ -13,6 +13,7 @@
 
     $DB = new BD($host, $port, $dbName, $user, $pass);
     $connect = $DB->connect();
+    var_dump($_POST['search_term']);
     $term = trim(strip_tags(substr($_POST['search_term'], 0, 100)));
     
     if ($term == '') {

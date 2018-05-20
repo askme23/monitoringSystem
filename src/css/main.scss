@@ -106,7 +106,7 @@ input[type] {
         display: flex;
         justify-content: flex-start;
         flex-direction: column;
-        width: 35%;
+        width: 30%;
         -webkit-flex: 1;
         margin-right: 20px;
 
@@ -114,12 +114,12 @@ input[type] {
             padding: 10px;
             margin-bottom: 10px;
         
-            input[type="text"] {
+            .input-search {
                 display: inline-block;
-                width: 90%;
-                font-size: 15px;
+                width: 74%;
+                font-size: 14px;
                 height: 25px;
-                padding: 3px 10px;
+                padding: 2px 5px;
                 margin-bottom: 10px;
 
                 &:hover {
@@ -140,6 +140,29 @@ input[type] {
                 //     display: block;
                 //     background: url("../img/search.png") no-repeat;
                 // }
+            }
+
+            .btn-search {
+                padding: 6px;
+            }
+
+            .age {
+                display: inline-block;
+                font-size: 13px;
+                width: 20px;
+                padding: 4px;
+                margin: 0 1px;
+
+                box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+                -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+                -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+                -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+                
+                &:focus {
+                    outline: none;
+                    text-decoration: none;
+                    border: none;
+                }
             }
 
             .additional-filters {
@@ -176,6 +199,7 @@ input[type] {
                 .classes {
                     color: rgb(53, 53, 53);
                     background-color: #00d0ff36;
+                    text-align: left;
                     margin-bottom: 5px;
                     width: 100%;
                 }
@@ -222,7 +246,7 @@ input[type] {
         justify-content: flex-start;
         flex-direction: column;
         padding: 15px;
-        width: 65%;
+        width: 70%;
 
         .years {
             padding: 5px;

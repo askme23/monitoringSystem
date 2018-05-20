@@ -1,7 +1,9 @@
 <?php
     function showDiagnosis($connect) {
-        $query = "select m.MKB_NAME,
-                         mc.description
+        $query = "select m.ID MKB_ID,
+                         m.MKB_NAME,
+                         mc.ID CLASS_ID,
+                         mc.description CLASS_NAME
                     from MKB10 m
                          join MKB_CLASSES mc on m.CLASS_ID = mc.ID 
                 order by mc.description";
@@ -10,19 +12,19 @@
 
         try {
             $MKB = $stmt->fetchAll();
-            $class = $MKB[0]['DESCRIPTION'];
+            $class = $MKB[0]['CLASS_NAME'];
             
-            $str = "<button class=\"btn classes\">$class</button>\n";
+            $str = "<button class=\"btn classes\" data-id=\"" . $MKB[0]['CLASS_ID'] . "\">" . $MKB[0]['CLASS_NAME'] . "</button>\n";
             $str .= "<div class=\"list\"> \n";
 
             for($i = 0; $i < count($MKB); ++$i) {
-                if ($MKB[$i]['DESCRIPTION'] != $class) {
+                if ($MKB[$i]['CLASS_NAME'] != $class) {
                     $str .= "</div> \n";
-                    $str .= "<button class=\"btn classes\">$class</button>\n";
-                    $class = $MKB[$i]['DESCRIPTION'];
+                    $str .= "<button class=\"btn classes\" data-id=\"" . $MKB[$i]['CLASS_ID']. "\">" . $MKB[$i]['CLASS_NAME'] . "</button>\n";
+                    $class = $MKB[$i]['CLASS_NAME'];
                     $str .= "<div class=\"list\"> \n";
                 }
-                $str .= "<div class=\"list-item\">" .  $MKB[$i]['MKB_NAME'] . "</div> \n";
+                $str .= "<div class=\"list-item\" data-id=\"" . $MKB[$i]['MKB_ID'] . "\">" .  $MKB[$i]['MKB_NAME'] . "</div> \n";
             }
             $str .= "</div> \n";
 

@@ -76,25 +76,41 @@ input[type] {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
-    width: 35%;
+    width: 30%;
     -webkit-flex: 1;
     margin-right: 20px; }
     .container-main .diseases .filter {
       padding: 10px;
       margin-bottom: 10px; }
-      .container-main .diseases .filter input[type="text"] {
+      .container-main .diseases .filter .input-search {
         display: inline-block;
-        width: 90%;
-        font-size: 15px;
+        width: 74%;
+        font-size: 14px;
         height: 25px;
-        padding: 3px 10px;
+        padding: 2px 5px;
         margin-bottom: 10px; }
-        .container-main .diseases .filter input[type="text"]:hover {
+        .container-main .diseases .filter .input-search:hover {
           box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
           -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
           -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
           -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65); }
-        .container-main .diseases .filter input[type="text"]:focus {
+        .container-main .diseases .filter .input-search:focus {
+          outline: none;
+          text-decoration: none;
+          border: none; }
+      .container-main .diseases .filter .btn-search {
+        padding: 6px; }
+      .container-main .diseases .filter .age {
+        display: inline-block;
+        font-size: 13px;
+        width: 20px;
+        padding: 4px;
+        margin: 0 1px;
+        box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+        -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+        -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+        -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65); }
+        .container-main .diseases .filter .age:focus {
           outline: none;
           text-decoration: none;
           border: none; }
@@ -123,6 +139,7 @@ input[type] {
         .container-main .diseases .list .main-list .classes {
           color: #353535;
           background-color: #00d0ff36;
+          text-align: left;
           margin-bottom: 5px;
           width: 100%; }
         .container-main .diseases .list .main-list .selected-class {
@@ -152,7 +169,7 @@ input[type] {
     justify-content: flex-start;
     flex-direction: column;
     padding: 15px;
-    width: 65%; }
+    width: 70%; }
     .container-main .graph .years {
       padding: 5px;
       text-align: center; }

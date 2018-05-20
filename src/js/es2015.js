@@ -8,10 +8,6 @@ let Age = new Array(2);
 let Time = [];
 
 $(document).ready(function() {
-    $(".filter .sex").change(function(e) {
-        Sex = +(e.target.checked);
-    });
-
     addEventOnFilters();
     addEventOnList();
     // Отображение найденных заболеваний
@@ -98,6 +94,54 @@ function addEventOnFilters() {
         if (filterData.length >= 3 || filterData == '') {
             searchDiagnosis(filterData); 
         }
+    });
+
+    function handlerForAge(context) {
+        let lastSymbol = context.value.substr(-1, 1);        
+
+        if (!$.isNumeric(lastSymbol) || (lastSymbol == '0' && context.value.length == 1)) {
+            context.value = context.value.substr(0, context.value.length - 1);
+        }
+    }
+
+    $(".additional-filters .from").on('keyup keydown', function(e) {
+        const target = e.target;
+        const inputAgeTo = $(".additional-filters .to")[0];
+        const self = $(this);
+
+        handlerForAge(target);
+        if (+this.value > +inputAgeTo.value && inputAgeTo.value.length > 0 && this.value != '') {
+            if (!$(this).hasClass('wrong-age')) {
+                $(this).addClass('wrong-age');
+            }
+        } else {
+            if ($(this).hasClass('wrong-age')) {
+                $(this).removeClass('wrong-age');
+            }
+        }
+
+    });
+
+    $(".additional-filters .to").on('keyup keydown', function(e) {
+        const target = e.target;
+        const inputAgeTo = $(".additional-filters .from")[0];
+        const self = $(this);
+
+        handlerForAge(target);
+        if (+this.value < +inputAgeTo.value && inputAgeTo.value.length > 0 && this.value != '') {
+            if (!$(this).hasClass('wrong-age')) {
+                $(this).addClass('wrong-age');
+            }
+        } else {
+            if ($(this).hasClass('wrong-age')) {
+                $(this).removeClass('wrong-age');
+            }
+        }
+
+    });
+
+    $(".filter .sex").change(function(e) {
+        Sex = +(e.target.checked);
     });
 }
 

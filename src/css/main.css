@@ -103,7 +103,7 @@ input[type] {
       .container-main .diseases .filter .age {
         display: inline-block;
         font-size: 13px;
-        width: 20px;
+        width: 25px;
         padding: 4px;
         margin: 0 1px;
         box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
@@ -114,6 +114,9 @@ input[type] {
           outline: none;
           text-decoration: none;
           border: none; }
+      .container-main .diseases .filter .wrong-age {
+        background-color: #dd6969;
+        color: white; }
       .container-main .diseases .filter .additional-filters {
         display: none;
         width: 90%; }

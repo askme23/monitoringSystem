@@ -31,11 +31,11 @@
                     <span>Возраст: </span>
                     <label>
                         с
-                        <input type="text" class="age">
+                        <input type="text" class="age from">
                     </label>
                     <label>
                         до
-                        <input type="text" class="age">
+                        <input type="text" class="age to">
                     </label>
                     <label>
                         Пол

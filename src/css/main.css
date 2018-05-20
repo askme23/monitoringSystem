@@ -176,6 +176,9 @@ input[type] {
     .container-main .graph .years {
       padding: 5px;
       text-align: center; }
+    .container-main .graph .selected-year {
+      background-color: #5ad47f;
+      color: black; }
     .container-main .graph .month {
       margin-bottom: 10px; }
     .container-main .graph .svg {

@@ -4,7 +4,7 @@
 var $ = require('jquery');
 var Chart = require('chart.js');
 
-var Diseaseases = [];
+var Diseaseases = new Set();
 var Sex = void 0;
 var Age = new Array(2);
 var Time = [];
@@ -12,13 +12,14 @@ var Time = [];
 $(document).ready(function () {
     addEventOnFilters();
     addEventOnList();
+    addEventOnYears();
     // Отображение найденных заболеваний
 
     var ctx = $(".svg")[0];
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
             datasets: [{
                 label: '# of Votes',
                 data: [12, 19, 3, 5, 2, 3],
@@ -46,11 +47,11 @@ function addEventOnList() {
     });
 
     $(".main-list .list-item").click(function (e) {
-        //TODO: переписать через деревья
+
         if ($(this).hasClass("selected-item")) {
-            Diseaseases.splice(Diseaseases.indexOf(e.target.dataset.id), 1);
+            Diseaseases.delete(e.target.dataset.id);
         } else {
-            Diseaseases.push(e.target.dataset.id);
+            Diseaseases.add(e.target.dataset.id);
         }
         $(this).toggleClass("selected-item");
     });
@@ -130,14 +131,41 @@ function addEventOnFilters() {
     });
 }
 
+function addEventOnYears() {
+    $(".graph .years button").click(function (e) {
+        e.preventDefault();
+        if ($(this).hasClass("selected-year")) {
+            Time.splice(Time.indexOf(e.target.innerHTML), 1);
+        } else {
+            Time.push(e.target.innerHTML);
+        }
+        $(this).toggleClass("selected-year");
+        getInformationForDiagnosis();
+    });
+}
+
+/**
+ * 
+ * AJAX запрос на получение диагноза
+ */
 function searchDiagnosis(data) {
-    $(".main-list").show();
+    //$(".main-list").show(); 
 
     //let searchValue = $(".filter .search").val();
-    $.post("/Diplom/src/php/filterDiagnosis.php", { search_term: { 'hello': 5 /*data*/ } }, function (responseData) {
+    $.post("/Diplom/src/php/filterDiagnosis.php", { search_term: data }, function (responseData) {
         if (responseData.length > 0) {
             $(".main-list").html(responseData);
             addEventOnList();
         }
+    });
+}
+
+function getInformationForDiagnosis() {
+    $.post("/Diplom/src/php/getInformationForDiagnosis.php", { Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time }, function (responseData) {
+        if (responseData.length > 0) {
+            console.log(responseData);
+        }
+    }).fail(function () {
+        console.log('Something gona wrong');
     });
 }

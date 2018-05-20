@@ -1,5 +1,5 @@
 $block-color: #E2E1E0;
-
+$select-item: rgb(90, 212, 127);
 // * {
 //     border: 1px solid rgb(56, 49, 49);
 // }
@@ -240,7 +240,7 @@ input[type] {
                 }
 
                 .selected-item {
-                    background-color: rgb(90, 212, 127);
+                    background-color: $select-item;
                 }
             }
         }
@@ -257,6 +257,11 @@ input[type] {
             padding: 5px;
             text-align: center;
             // margin-bottom: 10px;
+        }
+
+        .selected-year {
+            background-color: $select-item;
+            color: rgb(0, 0, 0);
         }
 
         .month {

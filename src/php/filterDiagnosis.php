@@ -13,26 +13,26 @@
 
     $DB = new BD($host, $port, $dbName, $user, $pass);
     $connect = $DB->connect();
-    var_dump($_POST['search_term']);
     $term = trim(strip_tags(substr($_POST['search_term'], 0, 100)));
     
     if ($term == '') {
         showDiagnosis($connect);
     } else {
-        $query = "select MKB_NAME 
+        $query = "select ID,
+                         MKB_NAME NAME
                     from MKB10 
-                   where MKB_NAME like '%$term%' 
+                   where MKB_NAME like '%" . $term . "%' 
                 order by MKB_NAME";
                 
         $stmt = $connect->prepare($query);
         $stmt->execute();
     
         try {
-            $MKB = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $MKB = $stmt->fetchAll();
             
             $str = '';
             for($i = 0; $i < count($MKB); ++$i) {
-                $str .= "<div class=\"list-item\">" .  $MKB[$i] . "</div> \n";
+                $str .= "<div class=\"list-item\" data-id=\"" . $MKB[$i]['ID'] . "\">" .  $MKB[$i]['NAME'] . "</div> \n";
             }
             
             echo $str;

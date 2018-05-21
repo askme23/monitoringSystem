@@ -4,7 +4,7 @@ const Chart = require('chart.js');
 
 let Diseaseases = new Set();
 let Sex;
-let Age = new Array(2);
+let Age = ['', ''];
 let Time = [];
 
 $(document).ready(function() {
@@ -141,6 +141,22 @@ function addEventOnFilters() {
 
     });
 
+    $(".filter .from").change(function(e) {
+        if (!$(this).hasClass("wrong-age")) {
+            Age[0] = e.target.value;
+        } else {
+            Age[0] = null;
+        }
+    });
+
+    $(".filter .to").change(function(e) {
+        if (!$(this).hasClass("wrong-age")) {
+            Age[1] = e.target.value;
+        } else {
+            Age[1] = null;
+        }
+    });
+
     $(".filter .sex").change(function(e) {
         Sex = +(e.target.checked);
     });
@@ -176,11 +192,15 @@ function searchDiagnosis(data) {
 }
 
 function getInformationForDiagnosis() {
-    $.post("/Diplom/src/php/getInformationForDiagnosis.php", {Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time}, function(responseData) {
-        if (responseData.length > 0) {
-            console.log(responseData);
-        }
-    }).fail(function() {
-        console.log('Something gona wrong');
+    $.ajax({
+        type: "POST",
+        url: "/Diplom/src/php/getInformationForDiagnosis.php",
+        data: {Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time},
+        success: function(responseData) {
+            if (responseData.length > 0) {
+                console.log(responseData);
+            } 
+        },
+        dataType: 'json'
     });
 }

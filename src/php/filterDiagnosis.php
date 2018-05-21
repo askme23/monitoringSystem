@@ -13,7 +13,7 @@
 
     $DB = new BD($host, $port, $dbName, $user, $pass);
     $connect = $DB->connect();
-    $term = trim(strip_tags(substr($_POST['search_term'], 0, 100)));
+    $term = mb_strtoupper(trim(strip_tags(substr($_POST['search_term'], 0, 100))));
     
     if ($term == '') {
         showDiagnosis($connect);
@@ -21,7 +21,7 @@
         $query = "select ID,
                          MKB_NAME NAME
                     from MKB10 
-                   where MKB_NAME like '%" . $term . "%' 
+                   where upper(MKB_NAME) like '%" . $term . "%' 
                 order by MKB_NAME";
                 
         $stmt = $connect->prepare($query);

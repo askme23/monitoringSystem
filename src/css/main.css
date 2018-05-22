@@ -68,7 +68,7 @@ input[type] {
 .container-main {
   display: flex;
   justify-content: left;
-  height: 550px;
+  min-height: 100%;
   margin: 10px auto;
   padding: 10px;
   width: 90%; }
@@ -172,20 +172,44 @@ input[type] {
     justify-content: flex-start;
     flex-direction: column;
     padding: 15px;
-    width: 70%; }
+    width: 70%;
+    height: auto; }
     .container-main .graph .years {
       padding: 5px;
       text-align: center; }
     .container-main .graph .selected-year {
       background-color: #5ad47f;
       color: black; }
-    .container-main .graph .month {
-      margin-bottom: 10px; }
+    .container-main .graph #slider-range {
+      margin: 10px 20px 50px; }
+    .container-main .graph .noUi-connect {
+      background-color: #1e7aaa; }
+    .container-main .graph .noUi-horizontal {
+      height: 14px; }
+    .container-main .graph .noUi-handle {
+      width: 21px;
+      height: 21px;
+      top: -6px;
+      border-radius: 50%;
+      cursor: pointer; }
+    .container-main .graph .noUi-handle:before,
+    .container-main .graph .noUi-handle:after {
+      display: none; }
+    .container-main .graph .noUi-marker {
+      display: none; }
+    .container-main .graph .noUi-value {
+      top: -1px; }
+    .container-main .graph .noUi-pips-horizontal {
+      left: 7px; }
     .container-main .graph .svg {
       background-color: #fff;
       height: 500px; }
 
 footer {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

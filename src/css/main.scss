@@ -97,7 +97,7 @@ input[type] {
 .container-main {
     display: flex;
     justify-content: left;
-    height: 550px;
+    min-height: 100%;
     margin: 10px auto;
     padding: 10px;
     width: 90%;
@@ -252,6 +252,7 @@ input[type] {
         flex-direction: column;
         padding: 15px;
         width: 70%;
+        height: auto;
 
         .years {
             padding: 5px;
@@ -264,8 +265,41 @@ input[type] {
             color: rgb(0, 0, 0);
         }
 
-        .month {
-            margin-bottom: 10px;
+        #slider-range {
+            margin: 10px 20px 50px;
+        }
+
+        .noUi-connect {
+            background-color: #1e7aaa;
+        }
+
+        .noUi-horizontal {
+            height: 14px;
+        }
+        
+        .noUi-handle {
+            width: 21px;
+            height: 21px;
+            top: -6px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .noUi-handle:before,
+        .noUi-handle:after {
+            display: none;
+        }
+
+        .noUi-marker {
+            display: none;
+        }
+
+        .noUi-value {
+            top: -1px;
+        }
+        
+        .noUi-pips-horizontal {
+            left: 7px;
         }
 
         .svg {
@@ -276,6 +310,10 @@ input[type] {
 }
 
 footer {
+    position: relative;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;

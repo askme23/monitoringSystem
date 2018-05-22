@@ -6,7 +6,8 @@
     <title>Статистическая информация по заболеваниям</title>
 
 
-    <link rel="stylesheet" shref="../node_modules/jquery-ui/themes/base/all.css">
+    <link rel="stylesheet" href="../node_modules/jquery-ui/themes/base/all.css">
+    <link rel="stylesheet" href="../node_modules/nouislider/distribute/nouislider.min.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -69,7 +70,6 @@
             <div class="list block">
                 <div class="main-list">
                     <?php 
-                        //TODO: сделать нормальное разделения php и html
                         require_once 'php/DataBase.php';
                         require_once 'php/showContents.php';
                         
@@ -100,7 +100,7 @@
                 ?>
                 
             </div>
-            <div class="month" id="slider-range"></div>
+            <div id="slider-range"></div>
 
             <canvas class="svg">
 

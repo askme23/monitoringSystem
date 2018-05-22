@@ -1,6 +1,7 @@
 //подклю
-const $ = require('jquery');
+const $ = require('jquery'); 
 const Chart = require('chart.js');
+const noUiSlider = require('nouislider');
 
 let Diseaseases = new Set();
 let Sex;
@@ -11,7 +12,22 @@ $(document).ready(function() {
     addEventOnFilters();
     addEventOnList();
     addEventOnYears();
-    // Отображение найденных заболеваний
+    
+    const slider = $("#slider-range")[0];
+    noUiSlider.create(slider, {
+        start: [1, 12],
+        step: 1,
+        pips: {
+            mode: 'values',
+            values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+            density: 10
+        },
+        connect: true,
+        range: {
+          min: 1,
+          max: 12
+        }
+      });
 
     var ctx = $(".svg")[0];
     var myChart = new Chart(ctx, {

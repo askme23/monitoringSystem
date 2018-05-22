@@ -1,6 +1,5 @@
 <?php
     require_once './DataBase.php';
-
     $diplom = fopen('/home/askme/askii/pass69.txt', 'r');
     $autData = explode(' ', trim(fgetss($diplom)));
 
@@ -23,7 +22,6 @@
     $fromSelect  = " from DISEASECASE d \n";
     $whereSelect = " where ";
     $whatGroup   = " group by ";
-    $whatHaving  = " having ";
     $whatOrder   = " order by ";
 
     // Добавляем к запросу МКБ-ки
@@ -45,7 +43,7 @@
     $timeCnt = count($Time);
     if ($timeCnt > 0) {
         if ($timeCnt == 1) {
-            $whatHaving .= "extract(year from d.CLOSEDATE) = " . $Time[0];
+            $whereSelect .= " and extract(year from d.CLOSEDATE) = " . $Time[0];
         } else {
             $years = "(" . $Time[0];
             for($i = 1; $i < $timeCnt; ++$i) {
@@ -53,10 +51,9 @@
             }
             $years .= ")";
 
-            $whatHaving .= "extract(year from d.CLOSEDATE) in " . $years ."\n";
+            $whereSelect .= " and extract(year from d.CLOSEDATE) in " . $years ."\n";
         }
         $whatGroup .= "extract(year from d.CLOSEDATE)";
-        $whatOrder .= "CLOSE_YEAR";
     }
 
     $ageCnt = count($Age);
@@ -72,11 +69,15 @@
     if ($Sex) {
         $whatSelect .= ", d.SEX";
         $whatGroup .= ", d.SEX";
+        $whatOrder .= "d.SEX, CLOSE_YEAR";    
+    } else {
+        $whatOrder .= "CLOSE_YEAR";
     }
-
+    
     /* Часть */
-    $query = $whatSelect . $fromSelect . $whereSelect . $whatGroup . $whatHaving . $whatOrder;
+    $query = $whatSelect . $fromSelect . $whereSelect . $whatGroup . $whatOrder;
 
+    var_dump($query);
     $stmt = $connect->prepare($query);
     $stmt->execute();
 

@@ -18,73 +18,95 @@
     $Time = isset($_POST['Time']) ? $_POST['Time'] : null;
 
     //Переменные для каждой составления выборки
-    $whatSelect  = "select count(*) CNT, extract(year from d.CLOSEDATE) CLOSE_YEAR";
-    $fromSelect  = " from DISEASECASE d \n";
+    $whatSelect  = "select count(*) CNT, m.MKB_NAME, extract(month from d.CLOSEDATE) CLOSE_MONTH, extract(year from d.CLOSEDATE) CLOSE_YEAR";
+    $fromSelect  = " from DISEASECASE d join MKB10 m on d.MKB_ID = m.ID\n";
     $whereSelect = " where ";
-    $whatGroup   = " group by ";
+    $whatGroup   = " group by m.MKB_NAME, extract(month from d.CLOSEDATE), extract(year from d.CLOSEDATE) ";
     $whatOrder   = " order by ";
 
-    // Добавляем к запросу МКБ-ки
-    $diseaseCnt = count($Diseaseases);
-    if ($diseaseCnt > 0) {
-        if ($diseaseCnt == 1) {
-            $whereSelect .= "d.MKB_ID = " . $Diseaseases[0];
-        } else {
-            $mkb = "(" . $Diseaseases[0];
-            for($i = 1; $i < $diseaseCnt; ++$i) {
-                $mkb .= ", " . $Diseaseases[$i];
-            }
-            $mkb .= ")";
+    // var_dump($Time);
+    function setDisease() {
+        global $Diseaseases, $whereSelect;
+        $diseaseCnt = count($Diseaseases);
+        if ($diseaseCnt > 0) {
+            if ($diseaseCnt == 1) {
+                $whereSelect .= " d.MKB_ID = " . $Diseaseases[0];
+            } else {
+                $mkb = "(" . $Diseaseases[0];
+                for($i = 1; $i < $diseaseCnt; ++$i) {
+                    $mkb .= ", " . $Diseaseases[$i];
+                }
+                $mkb .= ")";
 
-            $whereSelect .= "d.MKB_ID in " . $mkb . "\n";
+                $whereSelect .= " d.MKB_ID in " . $mkb . "\n";
+            }
+        }
+    }
+
+    function setAgeAndSex() {
+        global $Age, $Sex, $whereSelect, $whatSelect, $whatGroup, $whatOrder;
+        $ageCnt = count($Age);
+        if (!($Age[0] == '' && $Age[1] == '')) {
+
+            if ($Age[0] == '' || $Age[1] == '') {
+                $whereSelect .= " and d.AGE " . ($Age[0] != '' ? ">= " . $Age[0] : "<= " . $Age[1]);
+            } else {
+                $whereSelect .= " and d.AGE >= " . $Age[0] . " and d.AGE <= " . $Age[1];
+            }
+        }
+
+        if ($Sex) {
+            $whatSelect .= ", d.SEX";
+            $whatGroup .= ", d.SEX";
+            $whatOrder .= "SEX, CLOSE_YEAR, CLOSE_MONTH";    
+        } else {
+            $whatOrder .= "CLOSE_YEAR, CLOSE_MONTH";
         }
     }
 
     $timeCnt = count($Time);
     if ($timeCnt > 0) {
+        // есдли выбран год только один
         if ($timeCnt == 1) {
-            $whereSelect .= " and extract(year from d.CLOSEDATE) = " . $Time[0];
+            setDisease();
+            $whereSelect .= " and extract(year from d.CLOSEDATE) = " . $Time[0][0] . " and (extract(month from d.CLOSEDATE) >= " . (int)$Time[0][1][0] . " and extract(month from d.CLOSEDATE) <= " . (int)$Time[0][1][1] . ")";
+            setAgeAndSex();
+
+            $query = $whatSelect . $fromSelect . $whereSelect . $whatGroup . $whatOrder;
         } else {
-            $years = "(" . $Time[0];
-            for($i = 1; $i < $timeCnt; ++$i) {
-                $years .= ", " . $Time[$i];
+            $query = "";
+            
+            for($i = 0, $n = count($Time); $i < $n; $i++) {
+                setDisease();
+                setAgeAndSex();
+                $whereSelect .= " and extract(year from d.CLOSEDATE) = " . $Time[$i][0] . " and (extract(month from d.CLOSEDATE) >= " . (int)$Time[$i][1][0] . " and extract(month from d.CLOSEDATE) <= " . (int)$Time[$i][1][1] . ")";
+                
+                if ($i != $n - 1) {
+                    $query .= $whatSelect . $fromSelect . $whereSelect . $whatGroup . " \n union all \n";
+                } else {
+                    $query .= $whatSelect . $fromSelect . $whereSelect . $whatGroup . $whatOrder;
+                }
+
+                $whatSelect  = "select count(*) CNT, m.MKB_NAME, extract(month from d.CLOSEDATE) CLOSE_MONTH, extract(year from d.CLOSEDATE) CLOSE_YEAR";
+                $fromSelect  = " from DISEASECASE d join MKB10 m on d.MKB_ID = m.ID\n";
+                $whereSelect = " where ";
+                $whatGroup   = " group by m.MKB_NAME, extract(month from d.CLOSEDATE), extract(year from d.CLOSEDATE) ";
+                $whatOrder = " order by ";
             }
-            $years .= ")";
-
-            $whereSelect .= " and extract(year from d.CLOSEDATE) in " . $years ."\n";
         }
-        $whatGroup .= "extract(year from d.CLOSEDATE)";
-    }
-
-    $ageCnt = count($Age);
-    if (!($Age[0] == '' && $Age[1] == '')) {
-
-        if ($Age[0] == '' || $Age[1] == '') {
-            $whereSelect .= "and d.AGE " . ($Age[0] != '' ? ">= " . $Age[0] : "<= " . $Age[1]);
-        } else {
-            $whereSelect .= "and d.AGE >= " . $Age[0] . " and d.AGE <= " . $Age[1];
-        }
-    }
-
-    if ($Sex) {
-        $whatSelect .= ", d.SEX";
-        $whatGroup .= ", d.SEX";
-        $whatOrder .= "d.SEX, CLOSE_YEAR";    
     } else {
-        $whatOrder .= "CLOSE_YEAR";
+        setDisease();
+        setAgeAndSex();
+        $query = $whatSelect . $fromSelect . $whereSelect . $whatGroup . $whatOrder;
     }
-    
-    /* Часть */
-    $query = $whatSelect . $fromSelect . $whereSelect . $whatGroup . $whatOrder;
 
-    var_dump($query);
+    // var_dump($query);
     $stmt = $connect->prepare($query);
     $stmt->execute();
 
     try {
         $disease = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $JSON_object = json_encode($disease);
+        $JSON_object = json_encode($disease, JSON_UNESCAPED_UNICODE);
         
         echo $JSON_object;
     } catch(Exception $e) {

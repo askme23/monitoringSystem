@@ -9,12 +9,10 @@ var Diseaseases = new Set();
 var Sex = void 0;
 var Age = ['', ''];
 var Time = [];
+var selectedYear = void 0;
 
 $(document).ready(function () {
-    addEventOnFilters();
-    addEventOnList();
-    addEventOnYears();
-
+    // создаем слайдер
     var slider = $("#slider-range")[0];
     noUiSlider.create(slider, {
         start: [1, 12],
@@ -28,6 +26,15 @@ $(document).ready(function () {
         range: {
             min: 1,
             max: 12
+        }
+    });
+
+    slider.noUiSlider.on('set', function () {
+        for (var i = 0, n = Time.length; i < n; ++i) {
+            if (Time[i][0] == selectedYear) {
+                Time[i][1] = slider.noUiSlider.get();
+                getInformationForDiagnosis();
+            }
         }
     });
 
@@ -54,154 +61,177 @@ $(document).ready(function () {
             }
         }
     });
-});
 
-function addEventOnList() {
-    $(".main-list .classes").click(function (e) {
-        $(this)[0].nextElementSibling.classList.toggle("show-list");
-        $(this).toggleClass("selected-class");
-    });
+    // навеешиваем события
+    addEventOnFilters();
+    addEventOnList();
+    addEventOnYears();
 
-    $(".main-list .list-item").click(function (e) {
+    function addEventOnList() {
+        $(".main-list .classes").click(function (e) {
+            $(this)[0].nextElementSibling.classList.toggle("show-list");
+            $(this).toggleClass("selected-class");
+        });
 
-        if ($(this).hasClass("selected-item")) {
-            Diseaseases.delete(e.target.dataset.id);
-        } else {
-            Diseaseases.add(e.target.dataset.id);
-        }
-        $(this).toggleClass("selected-item");
-    });
-}
+        $(".main-list .list-item").click(function (e) {
 
-function addEventOnFilters() {
-    $(".filter .btn-filter").click(function () {
-        var addFilter = $(".filter .additional-filters");
-        addFilter.toggleClass("show");
-        addFilter.toggleClass("hide");
-    });
-
-    $(".filter .input-search").keyup(function (e) {
-        e.preventDefault();
-        var filterData = e.target.value;
-
-        if (filterData.length >= 3 || filterData == '') {
-            if (e.keyCode == 13) {
-                searchDiagnosis(filterData);
+            if ($(this).hasClass("selected-item")) {
+                Diseaseases.delete(e.target.dataset.id);
+            } else {
+                Diseaseases.add(e.target.dataset.id);
             }
-        }
-    });
-
-    $(".filter .btn-search").click(function (e) {
-        e.preventDefault();
-        var filterData = $('.filter .input-search')[0].value;
-
-        if (filterData.length >= 3 || filterData == '') {
-            searchDiagnosis(filterData);
-        }
-    });
-
-    function handlerForAge(context) {
-        var lastSymbol = context.value.substr(-1, 1);
-
-        if (!$.isNumeric(lastSymbol) || lastSymbol == '0' && context.value.length == 1) {
-            context.value = context.value.substr(0, context.value.length - 1);
-        }
+            $(this).toggleClass("selected-item");
+            getInformationForDiagnosis();
+        });
     }
 
-    $(".additional-filters .from").on('keyup keydown', function (e) {
-        var target = e.target;
-        var inputAgeTo = $(".additional-filters .to")[0];
-        var self = $(this);
+    function addEventOnFilters() {
+        $(".filter .btn-filter").click(function () {
+            var addFilter = $(".filter .additional-filters");
+            addFilter.toggleClass("show");
+            addFilter.toggleClass("hide");
+        });
 
-        handlerForAge(target);
-        if (+this.value > +inputAgeTo.value && inputAgeTo.value.length > 0 && this.value != '') {
-            if (!$(this).hasClass('wrong-age')) {
-                $(this).addClass('wrong-age');
+        $(".filter .reset-mkb").click(function (e) {
+            Diseaseases.clear();
+            searchDiagnosis();
+        });
+
+        $(".filter .input-search").keyup(function (e) {
+            e.preventDefault();
+            var filterData = e.target.value;
+
+            if (filterData.length >= 3 || filterData == '') {
+                if (e.keyCode == 13) {
+                    searchDiagnosis(filterData);
+                }
             }
-        } else {
-            if ($(this).hasClass('wrong-age')) {
-                $(this).removeClass('wrong-age');
+        });
+
+        $(".filter .btn-search").click(function (e) {
+            e.preventDefault();
+            var filterData = $('.filter .input-search')[0].value;
+
+            if (filterData.length >= 3 || filterData == '') {
+                searchDiagnosis(filterData);
+            }
+        });
+
+        function handlerForAge(context) {
+            var lastSymbol = context.value.substr(-1, 1);
+
+            if (!$.isNumeric(lastSymbol) || lastSymbol == '0' && context.value.length == 1) {
+                context.value = context.value.substr(0, context.value.length - 1);
             }
         }
-    });
 
-    $(".additional-filters .to").on('keyup keydown', function (e) {
-        var target = e.target;
-        var inputAgeTo = $(".additional-filters .from")[0];
-        var self = $(this);
+        $(".additional-filters .from").on('keyup keydown', function (e) {
+            var target = e.target;
+            var inputAgeTo = $(".additional-filters .to")[0];
+            var self = $(this);
 
-        handlerForAge(target);
-        if (+this.value < +inputAgeTo.value && inputAgeTo.value.length > 0 && this.value != '') {
-            if (!$(this).hasClass('wrong-age')) {
-                $(this).addClass('wrong-age');
+            handlerForAge(target);
+            if (+this.value > +inputAgeTo.value && inputAgeTo.value.length > 0 && this.value != '') {
+                if (!$(this).hasClass('wrong-age')) {
+                    $(this).addClass('wrong-age');
+                }
+            } else {
+                if ($(this).hasClass('wrong-age')) {
+                    $(this).removeClass('wrong-age');
+                }
             }
-        } else {
-            if ($(this).hasClass('wrong-age')) {
-                $(this).removeClass('wrong-age');
+        });
+
+        $(".additional-filters .to").on('keyup keydown', function (e) {
+            var target = e.target;
+            var inputAgeTo = $(".additional-filters .from")[0];
+            var self = $(this);
+
+            handlerForAge(target);
+            if (+this.value < +inputAgeTo.value && inputAgeTo.value.length > 0 && this.value != '') {
+                if (!$(this).hasClass('wrong-age')) {
+                    $(this).addClass('wrong-age');
+                }
+            } else {
+                if ($(this).hasClass('wrong-age')) {
+                    $(this).removeClass('wrong-age');
+                }
             }
-        }
-    });
+        });
 
-    $(".filter .from").change(function (e) {
-        if (!$(this).hasClass("wrong-age")) {
-            Age[0] = e.target.value;
-        } else {
-            Age[0] = null;
-        }
-    });
+        $(".filter .from").change(function (e) {
+            if (!$(this).hasClass("wrong-age")) {
+                Age[0] = e.target.value;
+                getInformationForDiagnosis();
+            } else {
+                Age[0] = null;
+            }
+        });
 
-    $(".filter .to").change(function (e) {
-        if (!$(this).hasClass("wrong-age")) {
-            Age[1] = e.target.value;
-        } else {
-            Age[1] = null;
-        }
-    });
+        $(".filter .to").change(function (e) {
+            if (!$(this).hasClass("wrong-age")) {
+                Age[1] = e.target.value;
+                getInformationForDiagnosis();
+            } else {
+                Age[1] = null;
+            }
+        });
 
-    $(".filter .sex").change(function (e) {
-        Sex = +e.target.checked;
-    });
-}
+        $(".filter .sex").change(function (e) {
+            Sex = +e.target.checked;
+            getInformationForDiagnosis();
+        });
+    }
 
-function addEventOnYears() {
-    $(".graph .years button").click(function (e) {
-        e.preventDefault();
-        if ($(this).hasClass("selected-year")) {
-            Time.splice(Time.indexOf(e.target.innerHTML), 1);
-        } else {
-            Time.push(e.target.innerHTML);
-        }
-        $(this).toggleClass("selected-year");
-        getInformationForDiagnosis();
-    });
-}
+    function addEventOnYears() {
+        $(".graph .years button").click(function (e) {
+            e.preventDefault();
+            if ($(this).hasClass("selected-year")) {
+                for (var i = 0; i < Time.length; ++i) {
+                    if (Time[i][0] == e.target.innerHTML) {
+                        Time.splice(i, 1);
+                    }
+                }
+            } else {
+                var arrOfTime = [];
+                selectedYear = e.target.innerHTML;
+                arrOfTime.push(selectedYear);
+                Time.push(arrOfTime);
+            }
 
-/**
- * 
- * AJAX запрос на получение диагноза
- */
-function searchDiagnosis(data) {
-    //$(".main-list").show(); 
+            $(this).toggleClass("selected-year");
+            slider.noUiSlider.set(['1', '12']);
+            getInformationForDiagnosis();
+        });
+    }
 
-    //let searchValue = $(".filter .search").val();
-    $.post("/Diplom/src/php/filterDiagnosis.php", { search_term: data }, function (responseData) {
-        if (responseData.length > 0) {
-            $(".main-list").html(responseData);
-            addEventOnList();
-        }
-    });
-}
+    /**
+     * 
+     * AJAX запрос на получение диагноза
+     */
+    function searchDiagnosis(data) {
+        //$(".main-list").show(); 
 
-function getInformationForDiagnosis() {
-    $.ajax({
-        type: "POST",
-        url: "/Diplom/src/php/getInformationForDiagnosis.php",
-        data: { Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time },
-        success: function success(responseData) {
+        //let searchValue = $(".filter .search").val();
+        $.post("/Diplom/src/php/filterDiagnosis.php", { search_term: data }, function (responseData) {
             if (responseData.length > 0) {
-                console.log(responseData);
+                $(".main-list").html(responseData);
+                addEventOnList();
             }
-        },
-        dataType: 'json'
-    });
-}
+        });
+    }
+
+    function getInformationForDiagnosis() {
+        $.ajax({
+            type: "POST",
+            url: "/Diplom/src/php/getInformationForDiagnosis.php",
+            data: { Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time },
+            success: function success(responseData) {
+                if (responseData.length > 0) {
+                    console.log(responseData);
+                }
+            },
+            dataType: 'json'
+        });
+    }
+});

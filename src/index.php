@@ -1,3 +1,4 @@
+<?php  header('Content-Type: text/html; charset=utf-8'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,6 +29,7 @@
             </div>
 
                 <button class="btn btn-filter">Доп.фильтры</button>
+                <button class="btn reset-mkb">Сбросить выбранные диагнозы</button>
                 <div class="additional-filters">
                     <span>Возраст: </span>
                     <label>
@@ -62,7 +64,7 @@
                                 <input type="radio" name="view" class="view">
                                 Диаграмма
                             </label>
-                        </li>    
+                        </li> 
                     </ul>
                 </div>
             </div>

@@ -13,9 +13,12 @@
 
     $DB = new BD($host, $port, $dbName, $user, $pass);
     $connect = $DB->connect();
-    $term = mb_strtoupper(trim(strip_tags(substr($_POST['search_term'], 0, 100))));
+
+    if (isset($_POST['search_term'])) {
+        $term = mb_strtoupper(trim(strip_tags(substr($_POST['search_term'], 0, 100))));
+    }
     
-    if ($term == '') {
+    if (!isset($_POST['search_term']) || $term == '') {
         showDiagnosis($connect);
     } else {
         $query = "select ID,

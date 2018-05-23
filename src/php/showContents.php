@@ -37,7 +37,7 @@
     function showYears($connect) {
         $query = "select extract(YEAR from d.CLOSEDATE) as YEAR
                          from DISEASECASE d
-                   where d.CLOSEDATE is not null
+                   where d.CLOSEDATE is not null and extract(year from d.CLOSEDATE) >= 2012
                 group by extract(YEAR from d.CLOSEDATE)
                 order by YEAR";
         

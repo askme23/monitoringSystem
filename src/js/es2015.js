@@ -1,6 +1,7 @@
 //подклю
 const $ = require('jquery'); 
 const Chart = require('chart.js');
+const moment = require('moment');
 const noUiSlider = require('nouislider');
 
 let Diseaseases = new Set();
@@ -37,7 +38,7 @@ $(document).ready(function() {
     });
 
 
-    var ctx = $(".svg")[0];
+    var ctx = $(".draw-area")[0];
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -62,13 +63,34 @@ $(document).ready(function() {
                     'rgba(255, 159, 64, 1)'
                 ],
                 borderWidth: 1
+            },
+            {
+                label: '# of asdf',
+                data: [5, 3, 7, 13, 8, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
             }]
         },
         options: {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero:true
+                        beginAtZero: true
                     }
                 }]
             }
@@ -243,10 +265,37 @@ $(document).ready(function() {
             data: {Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time},
             success: function(responseData) {
                 if (responseData.length > 0) {
-                    console.log(responseData);
+                    showStatistic(responseData);
                 } 
             },
             dataType: 'json'
         });
+    }
+
+    function showStatistic(jsonData) {
+        const [firstCanvas, secondCanvas] = document.getElementsByClassName('draw-area');
+        let minMonth, maxMonth;
+        let minYear, maxYear;
+        let mkbName = [];
+
+        if (Time.length > 0) {
+            minYear = Time[0][0];
+            maxYear = Time[0][0];
+            console.log(minYear, maxYear);
+            
+            for(let i = 0, n = Time.length; i < n; ++i) {
+                if (Time[i][0] <= minYear) {
+                    minYear = Time[i][0];
+                    minMonth = Time[i][1][0];
+                }
+                
+                if (Time[i][0] >= maxYear) {
+                    maxYear = Time[i][0];
+                    maxMonth = Time[i][1][1]; 
+                }
+            }
+        }
+
+        console.log(minMonth, maxMonth);
     }
 });

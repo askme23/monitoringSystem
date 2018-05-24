@@ -1,8 +1,11 @@
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 //подклю
 var $ = require('jquery');
 var Chart = require('chart.js');
+var moment = require('moment');
 var noUiSlider = require('nouislider');
 
 var Diseaseases = new Set();
@@ -38,7 +41,7 @@ $(document).ready(function () {
         }
     });
 
-    var ctx = $(".svg")[0];
+    var ctx = $(".draw-area")[0];
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -46,6 +49,12 @@ $(document).ready(function () {
             datasets: [{
                 label: '# of Votes',
                 data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+                borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+                borderWidth: 1
+            }, {
+                label: '# of asdf',
+                data: [5, 3, 7, 13, 8, 3],
                 backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
                 borderColor: ['rgba(255,99,132,1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
                 borderWidth: 1
@@ -228,10 +237,43 @@ $(document).ready(function () {
             data: { Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time },
             success: function success(responseData) {
                 if (responseData.length > 0) {
-                    console.log(responseData);
+                    showStatistic(responseData);
                 }
             },
             dataType: 'json'
         });
+    }
+
+    function showStatistic(jsonData) {
+        var _document$getElements = document.getElementsByClassName('draw-area'),
+            _document$getElements2 = _slicedToArray(_document$getElements, 2),
+            firstCanvas = _document$getElements2[0],
+            secondCanvas = _document$getElements2[1];
+
+        var minMonth = void 0,
+            maxMonth = void 0;
+        var minYear = void 0,
+            maxYear = void 0;
+        var mkbName = [];
+
+        if (Time.length > 0) {
+            minYear = Time[0][0];
+            maxYear = Time[0][0];
+            console.log(minYear, maxYear);
+
+            for (var i = 0, n = Time.length; i < n; ++i) {
+                if (Time[i][0] <= minYear) {
+                    minYear = Time[i][0];
+                    minMonth = Time[i][1][0];
+                }
+
+                if (Time[i][0] >= maxYear) {
+                    maxYear = Time[i][0];
+                    maxMonth = Time[i][1][1];
+                }
+            }
+        }
+
+        console.log(minMonth, maxMonth);
     }
 });

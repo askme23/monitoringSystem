@@ -104,9 +104,8 @@
             </div>
             <div id="slider-range"></div>
 
-            <canvas class="svg">
-
-            </canvas>
+            <canvas class="draw-area"></canvas>
+            <canvas class="draw-area" style="display: none;"></canvas>
         </div>
     </div>
     <footer>

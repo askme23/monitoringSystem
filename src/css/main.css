@@ -201,9 +201,10 @@ input[type] {
       top: -1px; }
     .container-main .graph .noUi-pips-horizontal {
       left: 7px; }
-    .container-main .graph .svg {
+    .container-main .graph .draw-area {
       background-color: #fff;
-      height: 500px; }
+      height: 500px;
+      margin-bottom: 10px; }
 
 footer {
   position: relative;

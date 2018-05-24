@@ -297,14 +297,15 @@ input[type] {
         .noUi-value {
             top: -1px;
         }
-        
+
         .noUi-pips-horizontal {
             left: 7px;
         }
 
-        .svg {
+        .draw-area {
             background-color: #fff;
             height: 500px;
+            margin-bottom: 10px;
         }
     }
 }

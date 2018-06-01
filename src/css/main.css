@@ -29,6 +29,7 @@ input[type] {
   font-family: "Ubuntu Mono";
   background-color: #007aaa;
   border-radius: 3px;
+  box-sizing: border-box;
   padding: 5px 7px;
   transition: 0.3s ease;
   color: white;
@@ -175,11 +176,13 @@ input[type] {
     width: 70%;
     height: auto; }
     .container-main .graph .years {
-      padding: 5px;
       text-align: center; }
     .container-main .graph .selected-year {
       background-color: #5ad47f;
       color: black; }
+    .container-main .graph .current-year {
+      margin: -2px -1px;
+      border: 2px solid white; }
     .container-main .graph #slider-range {
       margin: 10px 20px 50px; }
     .container-main .graph .noUi-connect {

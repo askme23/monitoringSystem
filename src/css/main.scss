@@ -42,6 +42,7 @@ input[type] {
     font-family: "Ubuntu Mono";
     background-color: rgb(0, 122, 170);
     border-radius: 3px;
+    box-sizing: border-box;
     padding: 5px 7px;
     transition: 0.3s ease;
     color: rgb(255, 255, 255);
@@ -255,7 +256,6 @@ input[type] {
         height: auto;
 
         .years {
-            padding: 5px;
             text-align: center;
             // margin-bottom: 10px;
         }
@@ -263,6 +263,11 @@ input[type] {
         .selected-year {
             background-color: $select-item;
             color: rgb(0, 0, 0);
+        }
+
+        .current-year {
+            margin: -2px -1px;
+            border: 2px solid rgb(255, 255, 255);
         }
 
         #slider-range {

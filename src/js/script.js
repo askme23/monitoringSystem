@@ -309,10 +309,22 @@ $(document).ready(function () {
         });
 
         if (view == 'graphic') {
+            $(".stat-table").empty();
+            $(".stat-table")[0].style.display = "none";
+            $(".draw-area")[0].style.display = "block";
+            $(".draw-area")[1].style.display = "none";
+
             prepareDataForGraphics(jsonData, minMonth, maxMonth, minYear, maxYear);
         } else if (view == 'diagram') {
+            $(".stat-table").empty();
+            $(".stat-table")[0].style.display = "none";
+            $(".draw-area")[0].style.display = "block";
+            $(".draw-area")[1].style.display = "none";
+
             prepareDataForDiagram(jsonData);
         } else if (view == 'table') {
+            $(".stat-table").empty();
+            $(".stat-table")[0].style.display = "";
             prepareDataForTable(jsonData);
         }
 
@@ -480,10 +492,6 @@ $(document).ready(function () {
                         if (json[_j]['MKB_NAME'] == existsInfoForDiseases[_i3]) {
                             if (Sex) {
                                 if (json[_j]['SEX'] == k) {
-                                    // console.log(k, dataForDiagram.datasets[k].data[i]);
-                                    // dataForDiagram.datasets[+json[j]['SEX']].data[i] += +json[j]['CNT'];
-                                    // console.log(dataForDiagram.datasets[0]);
-                                    // console.log(dataForDiagram.datasets[1]);
                                     temp += +json[_j]['CNT'];
                                 }
                             } else {
@@ -525,5 +533,40 @@ $(document).ready(function () {
         });
     }
 
-    function prepareDataForTable(json, minMonth, maxMonth, minYear, maxYear) {}
+    function prepareDataForTable(json) {
+        var finishMarkup = "";
+        json.sort(function (a, b) {
+            if (a['MKB_NAME'] > b['MKB_NAME']) {
+                return 1;
+            }
+
+            if (a['MKB_NAME'] < b['MKB_NAME']) {
+                return -1;
+            }
+
+            return 0;
+        });
+        console.log(json);
+        $(".draw-area").each(function (index, value) {
+            value.style.display = "none";
+        });
+
+        finishMarkup += "<tr>";
+        finishMarkup += '<th>\u2116</th>';
+        for (var key in json[0]) {
+            finishMarkup += '<th>' + key + '</th>';
+        }
+        finishMarkup += "</tr>";
+
+        for (var i = 0; i < json.length; ++i) {
+            finishMarkup += "<tr>";
+            finishMarkup += '<td>' + (i + 1) + '</td>';
+            for (var _key in json[i]) {
+                finishMarkup += '<td>' + json[i][_key] + '</td>';
+            }
+            finishMarkup += "</tr>";
+        }
+
+        $(".stat-table").append(finishMarkup);
+    }
 });

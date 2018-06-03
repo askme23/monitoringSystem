@@ -208,6 +208,18 @@ input[type] {
       background-color: #fff;
       min-height: 550px;
       margin-bottom: 10px; }
+    .container-main .graph .stat-table {
+      text-align: center;
+      font-size: 16px;
+      border-style: solid;
+      border-color: #0075aa;
+      border-collapse: collapse;
+      background-color: white;
+      overflow-y: scroll; }
+      .container-main .graph .stat-table td,
+      .container-main .graph .stat-table th {
+        border-width: 2px;
+        padding: 5px; }
 
 footer {
   position: relative;

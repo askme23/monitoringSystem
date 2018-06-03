@@ -104,8 +104,9 @@
             </div>
             <div id="slider-range"></div>
 
-            <canvas class="draw-area"></canvas>
+            <canvas class="draw-area" style="display: block;"></canvas>
             <canvas class="draw-area" style="display: none;"></canvas>
+            <table class="stat-table" border="1" height="550px"></table>
         </div>
     </div>
     <footer>

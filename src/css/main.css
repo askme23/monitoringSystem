@@ -206,7 +206,7 @@ input[type] {
       left: 7px; }
     .container-main .graph .draw-area {
       background-color: #fff;
-      height: 500px;
+      min-height: 550px;
       margin-bottom: 10px; }
 
 footer {

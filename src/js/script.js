@@ -2,8 +2,6 @@
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 //подклю
 var $ = require('jquery');
 var Chart = require('chart.js');
@@ -11,10 +9,11 @@ var moment = require('moment');
 var noUiSlider = require('nouislider');
 
 var Diseaseases = new Set();
-var Sex = void 0;
+var Sex = 0;
 var Age = ['', ''];
 var Time = [];
 var selectedYear = void 0;
+var CHARTS = [];
 
 $(document).ready(function () {
     // создаем слайдер
@@ -43,80 +42,30 @@ $(document).ready(function () {
         }
     });
 
-    var ctx = $(".draw-area")[0];
-    // var myChart = new Chart(ctx, {
+    // const [firstCanvas, secondCanvas] = $(".draw-area");
+    // Chart.defaults.global.defaultFontSize = 15;
+    // let myChart = new Chart(firstCanvas, {
     //     type: 'line',
     //     data: {
-    //         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: [12, 19, 3, 5, 2, 3],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255,99,132,1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         },
-    //         {
-    //             label: '# of asdf',
-    //             data: [5, 3, 7, 13, 8, 3],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255,99,132,1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
+    //         datasets: []
     //     },
     //     options: {
     //         scales: {
+    //             xAxes: [{
+    //                 type: 'time',
+    //                 time: {
+    //                     unit: 'month'
+    //                 }
+    //             }],
     //             yAxes: [{
-    //                 ticks: {
-    //                     beginAtZero: true
+    //                 scaleLabel: {
+    //                     display: true,
+    //                     labelString: "Количество заболеваний",
     //                 }
     //             }]
     //         }
     //     }
-    // })
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            datasets: []
-            // ,
-            // options: {
-            //     scales: {
-            //         xAxes: [{
-            //             type: 'time',
-            //             time: {
-            //                 unit: 'month'
-            //             }
-            //         }]
-            //     }
-            // }
-        } });
+    // });
 
     // навеешиваем события
     addEventOnFilters();
@@ -196,6 +145,10 @@ $(document).ready(function () {
                     $(this).removeClass('wrong-age');
                 }
             }
+        });
+
+        $(".view").on("change", function (e) {
+            getInformationForDiagnosis();
         });
 
         $(".additional-filters .to").on('keyup keydown', function (e) {
@@ -285,10 +238,17 @@ $(document).ready(function () {
     }
 
     function getInformationForDiagnosis() {
+        var view = '';
+        $(".view").each(function (index, value) {
+            if (value.checked) {
+                view = value.value;
+            }
+        });
+
         $.ajax({
             type: "POST",
             url: "/Diplom/src/php/getInformationForDiagnosis.php",
-            data: { Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time },
+            data: { Diseaseases: Array.from(Diseaseases), Age: Age, Sex: Sex, Time: Time, View: view },
             success: function success(responseData) {
                 if (responseData.length > 0) {
                     showStatistic(responseData);
@@ -298,69 +258,98 @@ $(document).ready(function () {
         });
     }
 
-    function showStatistic(jsonData) {
-        var _myChart$data$labels;
-
-        // console.log(jsonData);
-        var _document$getElements = document.getElementsByClassName('draw-area'),
-            _document$getElements2 = _slicedToArray(_document$getElements, 2),
-            firstCanvas = _document$getElements2[0],
-            secondCanvas = _document$getElements2[1];
-
-        var minMonth = void 0,
-            maxMonth = void 0;
+    function generateRandomColor() {
+        return 'rgb(' + Math.floor(Math.random() * 256) + ', ' + Math.floor(Math.random() * 256) + ', ' + Math.floor(Math.random() * 256) + ')';
+    }
+    function findPeriodTime(time) {
         var minYear = void 0,
-            maxYear = void 0;
-        var mkbName = [];
-        var statData = [];
-        // let dataSets = [];
+            maxYear = void 0,
+            minMonth = void 0,
+            maxMonth = void 0;
+        minYear = maxYear = minMonth = maxMonth = 0;
+        var periodTime = [];
 
-        if (Time.length > 0) {
-            minYear = Time[0][0];
-            maxYear = Time[0][0];
+        if (time.length > 0) {
+            minYear = time[0][0];
+            maxYear = time[0][0];
 
-            for (var i = 0, n = Time.length; i < n; ++i) {
-                if (Time[i][0] <= minYear) {
-                    minYear = Time[i][0];
-                    minMonth = Time[i][1][0];
+            for (var i = 0, n = time.length; i < n; ++i) {
+                if (time[i][0] <= minYear) {
+                    minYear = time[i][0];
+                    minMonth = time[i][1][0];
                 }
 
-                if (Time[i][0] >= maxYear) {
-                    maxYear = Time[i][0];
-                    maxMonth = Time[i][1][1];
+                if (time[i][0] >= maxYear) {
+                    maxYear = time[i][0];
+                    maxMonth = time[i][1][1];
                 }
             }
         }
 
-        statData = createLabelesAndDatasets(jsonData, minMonth, maxMonth, minYear, maxYear);
-        // for(let i = 0; i < formatDateLabels.length; i++) {
-        //     dataSets.push(Math.floor(Math.random() * 100));
-        // }
+        periodTime.push(minYear, maxYear, minMonth, maxMonth);
+        return periodTime;
+    }
 
-        //TODO: вынести в отдельную функцию обновление графиков
-        myChart.data.labels.length = 0;
-        myChart.data.datasets.length = 0;
-        myChart.update();
-        (_myChart$data$labels = myChart.data.labels).push.apply(_myChart$data$labels, _toConsumableArray(statData.labels));
-        statData.datasets.forEach(function (item) {
-            myChart.data.datasets.push(item);
+    function showStatistic(jsonData) {
+        // console.log(jsonData);
+        var _findPeriodTime = findPeriodTime(Time),
+            _findPeriodTime2 = _slicedToArray(_findPeriodTime, 4),
+            minYear = _findPeriodTime2[0],
+            maxYear = _findPeriodTime2[1],
+            minMonth = _findPeriodTime2[2],
+            maxMonth = _findPeriodTime2[3];
+
+        var statData = [];
+        var view = '';
+
+        $(".view").each(function (index, item) {
+            if (item.checked) {
+                view = item.value;
+            }
         });
-        myChart.update();
 
-        // console.log(myChart);
+        if (view == 'graphic') {
+            prepareDataForGraphics(jsonData, minMonth, maxMonth, minYear, maxYear);
+        } else if (view == 'diagram') {
+            prepareDataForDiagram(jsonData);
+        } else if (view == 'table') {
+            prepareDataForTable(jsonData);
+        }
+
+        //TODO: вынести в отдельную функцию обновление canvas если выбран вид отображения График или Диаграмма
+        // chart.data.labels.length = 0;
+        // chart.data.datasets.length = 0;
+        // chart.update();
+        // chart.data.labels.push(... statData.labels);
+        // statData.datasets.forEach(function(item) {
+        //     chart.data.datasets.push(item);
+        // });
+        // chart.update();
     }
 
     // функция формирования лэйблов и данных для графиков
-    function createLabelesAndDatasets(json, minMonth, maxMonth, minYear, maxYear) {
-        //объект с лэйблами и графиками
-        var labelsAndDatasets = {
-            labels: [],
-            datasets: []
-        };
+    function prepareDataForGraphics(json, minMonth, maxMonth, minYear, maxYear) {
+        var canvas = $(".draw-area");
+        var dataForGraphics = [{ labels: [], datasets: [] }, { labels: [], datasets: [] }];
+        // let optionForGraphics = [{}, {}];
 
         Diseaseases.forEach(function (item) {
-            labelsAndDatasets.datasets.push({ label: $('[data-id=\"' + item + '\"]')[0].innerHTML, data: [] });
+            for (var i = 0; i <= Sex; ++i) {
+                dataForGraphics[i].datasets.push({
+                    label: $('[data-id=\"' + item + '\"]')[0].innerHTML,
+                    data: [],
+                    fill: false,
+                    borderColor: generateRandomColor(),
+                    pointBorderColor: 'rgb(107, 107, 107)',
+                    pointBackgroundColor: 'rgb(178, 221, 230)',
+                    backgroundColor: 'transparent',
+                    pointRadius: 3,
+                    pointHoverRadius: 6,
+                    borderWidth: 2
+                });
+            }
         });
+
         json.sort(function (a, b) {
             return a['MKB_NAME'] - b['MKB_NAME'];
         });
@@ -385,21 +374,156 @@ $(document).ready(function () {
 
                 var isFound = false;
                 for (j; j < monthCount; ++j) {
-                    for (var k = 0; k < labelsAndDatasets.datasets.length; ++k) {
-                        for (var l = 0; l < json.length; ++l) {
-                            if (json[l]['MKB_NAME'] == labelsAndDatasets.datasets[k]['label'] && +json[l]['CLOSE_MONTH'] == j + 1 && json[l]['CLOSE_YEAR'] == Time[i][0]) {
-                                isFound = json[l]['CNT'];
+                    // цикл по полу
+                    for (var t = 0; t <= Sex; ++t) {
+                        for (var k = 0; k < dataForGraphics[t].datasets.length; ++k) {
+                            for (var l = 0; l < json.length; ++l) {
+                                if (json[l]['MKB_NAME'] == dataForGraphics[t].datasets[k]['label'] && +json[l]['CLOSE_MONTH'] == j + 1 && json[l]['CLOSE_YEAR'] == Time[i][0]) {
+                                    if (Sex) {
+                                        if (json[l]['SEX'] == t) {
+                                            isFound = json[l]['CNT'];
+                                        }
+                                    } else {
+                                        isFound = json[l]['CNT'];
+                                    }
+                                }
                             }
+                            dataForGraphics[t].datasets[k].data.push(+isFound || undefined);
+                            isFound = false;
                         }
-                        labelsAndDatasets.datasets[k].data.push(+isFound || undefined);
-                        isFound = false;
+                        dataForGraphics[t].labels.push(moment([Time[i][0], j]).format('MMM YYYY'));
                     }
-                    labelsAndDatasets.labels.push(moment([Time[i][0], j]).format('MMM YYYY'));
                 }
-                // console.log(labelsAndDatasets);
             }
         }
 
-        return labelsAndDatasets;
+        // если имеется разделение по полу, то используем 2 области для рисования
+        canvas[1].style.display = Sex ? 'block' : 'none';
+        Chart.defaults.global.defaultFontSize = 15;
+        for (var _i = 0; _i <= Sex; _i++) {
+            try {
+                CHARTS[_i].destroy();
+            } catch (e) {}
+
+            CHARTS[_i] = new Chart(canvas[_i], {
+                type: 'line',
+                data: {
+                    labels: dataForGraphics[_i].labels,
+                    datasets: dataForGraphics[_i].datasets
+                },
+                options: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 30,
+                            fontColor: 'black',
+                            fontSize: 12
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: '\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0430 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u0435\u043C\u043E\u0441\u0442\u0438 ' + (Sex ? _i ? ' по мужскому полу' : ' по женскому полу' : '')
+                    },
+                    scales: {
+                        xAxes: [{
+                            type: 'time',
+                            time: {
+                                unit: 'month'
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: "Количество заболеваний"
+                            }
+                        }]
+                    }
+                }
+            });
+        }
     }
+
+    function prepareDataForDiagram(json) {
+        var canvas = $(".draw-area")[0];
+        var existsInfoForDiseases = [];
+        var dataForDiagram = { datasets: [] };
+
+        for (var i = 0; i < json.length; ++i) {
+            if (existsInfoForDiseases.indexOf(json[i]['MKB_NAME']) == -1) {
+                existsInfoForDiseases.push(json[i]['MKB_NAME']);
+            }
+        }
+        var colorOfParts = [];
+        var tempArray = [];
+        for (var j = 0; j < existsInfoForDiseases.length; ++j) {
+            colorOfParts.push('' + generateRandomColor());
+        }
+
+        for (var _i2 = 0; _i2 <= Sex; ++_i2) {
+            dataForDiagram.datasets.push({
+                data: new Array(existsInfoForDiseases.length),
+                backgroundColor: colorOfParts
+            });
+        }
+
+        json.sort(function (a, b) {
+            return a['MKB_NAME'] - b['MKB_NAME'];
+        });
+
+        // console.log(json);
+        if (Time.length > 0) {
+            for (var k = 0; k <= Sex; ++k) {
+                for (var _i3 = 0; _i3 < existsInfoForDiseases.length; ++_i3) {
+                    var temp = 0;
+                    for (var _j = 0; _j < json.length; ++_j) {
+                        if (json[_j]['MKB_NAME'] == existsInfoForDiseases[_i3]) {
+                            if (Sex) {
+                                if (json[_j]['SEX'] == k) {
+                                    // console.log(k, dataForDiagram.datasets[k].data[i]);
+                                    // dataForDiagram.datasets[+json[j]['SEX']].data[i] += +json[j]['CNT'];
+                                    // console.log(dataForDiagram.datasets[0]);
+                                    // console.log(dataForDiagram.datasets[1]);
+                                    temp += +json[_j]['CNT'];
+                                }
+                            } else {
+                                temp += +json[_j]['CNT'];
+                            }
+                        }
+                    }
+                    dataForDiagram.datasets[k].data[_i3] = temp;
+                }
+            }
+        }
+
+        Chart.defaults.global.defaultFontSize = 15;
+        try {
+            CHARTS[0].destroy();
+        } catch (e) {}
+
+        CHARTS[0] = new Chart(canvas, {
+            type: 'pie',
+            data: {
+                labels: existsInfoForDiseases,
+                datasets: dataForDiagram.datasets
+            },
+            options: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 30,
+                        fontColor: 'black',
+                        fontSize: 12
+                    }
+                },
+                title: {
+                    display: true,
+                    text: '\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0430 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u0435\u043C\u043E\u0441\u0442\u0438 ' + (Sex ? "(внешний круг - женский пол, внутренний - мужской)" : "")
+                }
+            }
+        });
+    }
+
+    function prepareDataForTable(json, minMonth, maxMonth, minYear, maxYear) {}
 });

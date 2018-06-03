@@ -16,13 +16,22 @@
     $Sex  = isset($_POST['Sex']) ? strip_tags($_POST['Sex']) : null;
     $Age  = isset($_POST['Age']) ? $_POST['Age'] : null;
     $Time = isset($_POST['Time']) ? $_POST['Time'] : null;
+    $View = isset($_POST['View']) ? $_POST['View'] : null;
 
     //Переменные для каждой составления выборки
-    $whatSelect  = "select count(*) CNT, m.MKB_NAME, extract(month from d.CLOSEDATE) CLOSE_MONTH, extract(year from d.CLOSEDATE) CLOSE_YEAR";
+    $whatSelect  = "select count(*) CNT, m.MKB_NAME"; 
+    if ($View != "diagram") {
+        $whatSelect .= ", extract(month from d.CLOSEDATE) CLOSE_MONTH, extract(year from d.CLOSEDATE) CLOSE_YEAR";
+    }
+
     $fromSelect  = " from DISEASECASE d join MKB10 m on d.MKB_ID = m.ID\n";
     $whereSelect = " where ";
-    $whatGroup   = " group by m.MKB_NAME, extract(month from d.CLOSEDATE), extract(year from d.CLOSEDATE) ";
+    $whatGroup   = " group by m.MKB_NAME";
     $whatOrder   = " order by ";
+    if ($View != "diagram") {
+        $whatGroup .= ", extract(month from d.CLOSEDATE), extract(year from d.CLOSEDATE)";
+    }
+
 
     // var_dump($Time);
     function setDisease() {
@@ -44,7 +53,7 @@
     }
 
     function setAgeAndSex() {
-        global $Age, $Sex, $whereSelect, $whatSelect, $whatGroup, $whatOrder;
+        global $Age, $Sex, $whereSelect, $whatSelect, $whatGroup, $whatOrder, $View;
         $ageCnt = count($Age);
         if (!($Age[0] == '' && $Age[1] == '')) {
 
@@ -58,9 +67,18 @@
         if ($Sex) {
             $whatSelect .= ", d.SEX";
             $whatGroup .= ", d.SEX";
-            $whatOrder .= "SEX, CLOSE_YEAR, CLOSE_MONTH";    
+            $whatOrder .= "SEX";
+            if ($View != 'diagram') {
+                $whatOrder .= ", CLOSE_YEAR, CLOSE_MONTH";
+            } else {
+                $whatOrder .= ", MKB_NAME";
+            }
         } else {
-            $whatOrder .= "CLOSE_YEAR, CLOSE_MONTH";
+            if ($View != 'diagram') {
+                $whatOrder .= "CLOSE_YEAR, CLOSE_MONTH";
+            } else {
+                $whatOrder .= "MKB_NAME";
+            }
         }
     }
 
@@ -87,11 +105,18 @@
                     $query .= $whatSelect . $fromSelect . $whereSelect . $whatGroup . $whatOrder;
                 }
 
-                $whatSelect  = "select count(*) CNT, m.MKB_NAME, extract(month from d.CLOSEDATE) CLOSE_MONTH, extract(year from d.CLOSEDATE) CLOSE_YEAR";
+                $whatSelect  = "select count(*) CNT, m.MKB_NAME";
+                if ($View != "diagram") {
+                    $whatSelect .= ", extract(month from d.CLOSEDATE) CLOSE_MONTH, extract(year from d.CLOSEDATE) CLOSE_YEAR";
+                }
+                
                 $fromSelect  = " from DISEASECASE d join MKB10 m on d.MKB_ID = m.ID\n";
                 $whereSelect = " where ";
-                $whatGroup   = " group by m.MKB_NAME, extract(month from d.CLOSEDATE), extract(year from d.CLOSEDATE) ";
+                $whatGroup   = " group by m.MKB_NAME";
                 $whatOrder = " order by ";
+                if ($View != "diagram") {
+                    $whatGroup .= ", extract(month from d.CLOSEDATE), extract(year from d.CLOSEDATE)";
+                }
             }
         }
     } else {

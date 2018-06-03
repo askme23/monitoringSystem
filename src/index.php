@@ -49,19 +49,19 @@
                         Вид отображения:
                         <li>
                             <label>
-                                <input type="radio" name="view" class="view">
+                                <input type="radio" name="view" class="view" value="graphic" checked>
                                 График
                             </label>
                         </li>
                         <li>
                             <label>
-                                <input type="radio" name="view" class="view">
+                                <input type="radio" name="view" class="view" value="table">
                                 Таблицы
                             </label>
                         </li>
                         <li>
                             <label>
-                                <input type="radio" name="view" class="view">
+                                <input type="radio" name="view" class="view" value="diagram">
                                 Диаграмма
                             </label>
                         </li> 

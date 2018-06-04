@@ -309,8 +309,12 @@ input[type] {
 
         .draw-area {
             background-color: #fff;
-            min-height: 550px;
+            min-height: 350px;
             margin-bottom: 10px;
+
+            @media only screen and (min-width: 1824px) {
+                min-height: 550px;
+            }
         }
 
         .stat-table {

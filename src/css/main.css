@@ -206,8 +206,11 @@ input[type] {
       left: 7px; }
     .container-main .graph .draw-area {
       background-color: #fff;
-      min-height: 550px;
+      min-height: 350px;
       margin-bottom: 10px; }
+      @media only screen and (min-width: 1824px) {
+        .container-main .graph .draw-area {
+          min-height: 550px; } }
     .container-main .graph .stat-table {
       text-align: center;
       font-size: 16px;

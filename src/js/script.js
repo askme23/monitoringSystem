@@ -342,13 +342,20 @@ $(document).ready(function () {
     // функция формирования лэйблов и данных для графиков
     function prepareDataForGraphics(json, minMonth, maxMonth, minYear, maxYear) {
         var canvas = $(".draw-area");
+        var existsInfoForDiseases = [];
         var dataForGraphics = [{ labels: [], datasets: [] }, { labels: [], datasets: [] }];
         // let optionForGraphics = [{}, {}];
 
-        Diseaseases.forEach(function (item) {
-            for (var i = 0; i <= Sex; ++i) {
-                dataForGraphics[i].datasets.push({
-                    label: $('[data-id=\"' + item + '\"]')[0].innerHTML,
+        for (var i = 0; i < json.length; ++i) {
+            if (existsInfoForDiseases.indexOf(json[i]['MKB_NAME']) == -1) {
+                existsInfoForDiseases.push(json[i]['MKB_NAME']);
+            }
+        }
+
+        existsInfoForDiseases.forEach(function (item) {
+            for (var _i = 0; _i <= Sex; ++_i) {
+                dataForGraphics[_i].datasets.push({
+                    label: item,
                     data: [],
                     fill: false,
                     borderColor: generateRandomColor(),
@@ -357,24 +364,24 @@ $(document).ready(function () {
                     backgroundColor: 'transparent',
                     pointRadius: 3,
                     pointHoverRadius: 6,
-                    borderWidth: 2
+                    borderWidth: 1
                 });
             }
         });
 
-        json.sort(function (a, b) {
-            return a['MKB_NAME'] - b['MKB_NAME'];
-        });
+        // json.sort(function(a, b) {
+        //     return a['MKB_NAME'] - b['MKB_NAME'];
+        // });
 
         if (Time.length > 0) {
             var j = 0,
                 monthCount = 0;
-            for (var i = 0, n = Time.length; i < n; ++i) {
+            for (var _i2 = 0, n = Time.length; _i2 < n; ++_i2) {
                 // в минимальном году берем минимальный месяц
-                if (Time[i][0] == minYear) {
+                if (Time[_i2][0] == minYear) {
                     j = minMonth - 1; // TODO: неизвестно почему тут приходиться вычитать один месяц )
                     monthCount = 12;
-                } else if (Time[i][0] == maxYear) {
+                } else if (Time[_i2][0] == maxYear) {
                     // в максимальном году берем максимальный месяц
                     j = 0;
                     monthCount = maxMonth;
@@ -390,7 +397,7 @@ $(document).ready(function () {
                     for (var t = 0; t <= Sex; ++t) {
                         for (var k = 0; k < dataForGraphics[t].datasets.length; ++k) {
                             for (var l = 0; l < json.length; ++l) {
-                                if (json[l]['MKB_NAME'] == dataForGraphics[t].datasets[k]['label'] && +json[l]['CLOSE_MONTH'] == j + 1 && json[l]['CLOSE_YEAR'] == Time[i][0]) {
+                                if (json[l]['MKB_NAME'] == dataForGraphics[t].datasets[k]['label'] && +json[l]['CLOSE_MONTH'] == j + 1 && json[l]['CLOSE_YEAR'] == Time[_i2][0]) {
                                     if (Sex) {
                                         if (json[l]['SEX'] == t) {
                                             isFound = json[l]['CNT'];
@@ -403,7 +410,7 @@ $(document).ready(function () {
                             dataForGraphics[t].datasets[k].data.push(+isFound || undefined);
                             isFound = false;
                         }
-                        dataForGraphics[t].labels.push(moment([Time[i][0], j]).format('MMM YYYY'));
+                        dataForGraphics[t].labels.push(moment([Time[_i2][0], j]).format('MMM YYYY'));
                     }
                 }
             }
@@ -411,17 +418,17 @@ $(document).ready(function () {
 
         // если имеется разделение по полу, то используем 2 области для рисования
         canvas[1].style.display = Sex ? 'block' : 'none';
-        Chart.defaults.global.defaultFontSize = 15;
-        for (var _i = 0; _i <= Sex; _i++) {
+        // Chart.defaults.global.defaultFontSize = 10;
+        for (var _i3 = 0; _i3 <= Sex; _i3++) {
             try {
-                CHARTS[_i].destroy();
+                CHARTS[_i3].destroy();
             } catch (e) {}
 
-            CHARTS[_i] = new Chart(canvas[_i], {
+            CHARTS[_i3] = new Chart(canvas[_i3], {
                 type: 'line',
                 data: {
-                    labels: dataForGraphics[_i].labels,
-                    datasets: dataForGraphics[_i].datasets
+                    labels: dataForGraphics[_i3].labels,
+                    datasets: dataForGraphics[_i3].datasets
                 },
                 options: {
                     legend: {
@@ -429,13 +436,12 @@ $(document).ready(function () {
                         position: 'bottom',
                         labels: {
                             boxWidth: 30,
-                            fontColor: 'black',
-                            fontSize: 12
+                            fontColor: 'black'
                         }
                     },
                     title: {
                         display: true,
-                        text: '\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0430 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u0435\u043C\u043E\u0441\u0442\u0438 ' + (Sex ? _i ? ' по мужскому полу' : ' по женскому полу' : '')
+                        text: '\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0430 \u0437\u0430\u0431\u043E\u043B\u0435\u0432\u0430\u0435\u043C\u043E\u0441\u0442\u0438 ' + (Sex ? _i3 ? ' по мужскому полу' : ' по женскому полу' : '')
                     },
                     scales: {
                         xAxes: [{
@@ -472,7 +478,7 @@ $(document).ready(function () {
             colorOfParts.push('' + generateRandomColor());
         }
 
-        for (var _i2 = 0; _i2 <= Sex; ++_i2) {
+        for (var _i4 = 0; _i4 <= Sex; ++_i4) {
             dataForDiagram.datasets.push({
                 data: new Array(existsInfoForDiseases.length),
                 backgroundColor: colorOfParts
@@ -486,10 +492,10 @@ $(document).ready(function () {
         // console.log(json);
         if (Time.length > 0) {
             for (var k = 0; k <= Sex; ++k) {
-                for (var _i3 = 0; _i3 < existsInfoForDiseases.length; ++_i3) {
+                for (var _i5 = 0; _i5 < existsInfoForDiseases.length; ++_i5) {
                     var temp = 0;
                     for (var _j = 0; _j < json.length; ++_j) {
-                        if (json[_j]['MKB_NAME'] == existsInfoForDiseases[_i3]) {
+                        if (json[_j]['MKB_NAME'] == existsInfoForDiseases[_i5]) {
                             if (Sex) {
                                 if (json[_j]['SEX'] == k) {
                                     temp += +json[_j]['CNT'];
@@ -499,7 +505,7 @@ $(document).ready(function () {
                             }
                         }
                     }
-                    dataForDiagram.datasets[k].data[_i3] = temp;
+                    dataForDiagram.datasets[k].data[_i5] = temp;
                 }
             }
         }
@@ -546,7 +552,6 @@ $(document).ready(function () {
 
             return 0;
         });
-        console.log(json);
         $(".draw-area").each(function (index, value) {
             value.style.display = "none";
         });

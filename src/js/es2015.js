@@ -332,13 +332,20 @@ $(document).ready(function() {
     // функция формирования лэйблов и данных для графиков
     function prepareDataForGraphics(json, minMonth, maxMonth, minYear, maxYear) {
         const canvas = $(".draw-area");
+        let existsInfoForDiseases = [];
         let dataForGraphics = [{ labels: [], datasets: [] }, { labels: [], datasets: [] }];
         // let optionForGraphics = [{}, {}];
 
-        Diseaseases.forEach(function(item) {
+        for(let i = 0; i < json.length; ++i) {
+            if (existsInfoForDiseases.indexOf(json[i]['MKB_NAME']) == -1) {
+                existsInfoForDiseases.push(json[i]['MKB_NAME']);
+            }
+        }
+
+        existsInfoForDiseases.forEach(function(item) {
             for(let i = 0; i <= Sex; ++i) {
                 dataForGraphics[i].datasets.push({
-                    label: $('[data-id=\"' + item + '\"]')[0].innerHTML, 
+                    label: item, 
                     data: [],
                     fill: false,
                     borderColor: generateRandomColor(),
@@ -347,14 +354,14 @@ $(document).ready(function() {
                     backgroundColor: 'transparent',
                     pointRadius: 3,
                     pointHoverRadius: 6,
-                    borderWidth: 2
+                    borderWidth: 1
                 });
             }
         });
 
-        json.sort(function(a, b) {
-            return a['MKB_NAME'] - b['MKB_NAME'];
-        });
+        // json.sort(function(a, b) {
+        //     return a['MKB_NAME'] - b['MKB_NAME'];
+        // });
 
         if (Time.length > 0) {
             let j = 0, monthCount = 0;
@@ -400,7 +407,7 @@ $(document).ready(function() {
         
         // если имеется разделение по полу, то используем 2 области для рисования
         canvas[1].style.display = (Sex) ? 'block' : 'none';
-        Chart.defaults.global.defaultFontSize = 15;
+        // Chart.defaults.global.defaultFontSize = 10;
         for(let i = 0; i <= Sex; i++) {
             try {
                 CHARTS[i].destroy();
@@ -419,7 +426,6 @@ $(document).ready(function() {
                         labels: {
                           boxWidth: 30,
                           fontColor: 'black',
-                          fontSize: 12
                         }
                     },
                     title: {

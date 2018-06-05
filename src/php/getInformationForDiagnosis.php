@@ -60,7 +60,7 @@
             if ($Age[0] == '' || $Age[1] == '') {
                 $whereSelect .= " and d.AGE " . ($Age[0] != '' ? ">= " . $Age[0] : "<= " . $Age[1]);
             } else {
-                $whereSelect .= " and d.AGE >= " . $Age[0] . " and d.AGE <= " . $Age[1];
+                $whereSelect .= " and d.AGE BETWEEN " . $Age[0] . " and " . $Age[1];
             }
         }
 

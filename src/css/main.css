@@ -161,13 +161,12 @@ input[type] {
           margin-bottom: 2px; }
           .container-main .diseases .list .main-list .list-item:hover {
             cursor: pointer;
-            background-color: #5ad47f;
-            box-shadow: 0 0 8px rgba(0, 17, 255, 0.274);
-            -webkit-box-shadow: 0 0 8px rgba(0, 17, 255, 0.274);
-            -moz-box-shadow: 0 0 8px rgba(0, 17, 255, 0.274);
-            -o-box-shadow: 0 0 8px rgba(0, 17, 255, 0.274); }
+            box-shadow: 0 0 8px #007aaa;
+            -webkit-box-shadow: 0 0 8px #007aaa;
+            -moz-box-shadow: 0 0 8px #007aaa;
+            -o-box-shadow: 0 0 8px #007aaa; }
         .container-main .diseases .list .main-list .selected-item {
-          background-color: #5ad47f; }
+          background-color: rgba(90, 212, 127, 0.5); }
   .container-main .graph {
     display: flex;
     justify-content: flex-start;
@@ -178,11 +177,11 @@ input[type] {
     .container-main .graph .years {
       text-align: center; }
     .container-main .graph .selected-year {
-      background-color: #5ad47f;
+      background-color: rgba(90, 212, 127, 0.5);
       color: black; }
     .container-main .graph .current-year {
       margin: -2px -1px;
-      border: 2px solid white; }
+      border: 2px solid black; }
     .container-main .graph #slider-range {
       margin: 10px 20px 50px; }
     .container-main .graph .noUi-connect {
@@ -205,7 +204,7 @@ input[type] {
     .container-main .graph .noUi-pips-horizontal {
       left: 7px; }
     .container-main .graph .draw-area {
-      background-color: #fff;
+      background-color: white;
       min-height: 350px;
       margin-bottom: 10px; }
       @media only screen and (min-width: 1824px) {

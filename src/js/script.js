@@ -33,7 +33,7 @@ $(document).ready(function () {
         }
     });
 
-    slider.noUiSlider.on('set', function () {
+    slider.noUiSlider.on('update', function () {
         for (var i = 0, n = Time.length; i < n; ++i) {
             if (Time[i][0] == selectedYear) {
                 Time[i][1] = slider.noUiSlider.get();
@@ -41,28 +41,11 @@ $(document).ready(function () {
             }
         }
     });
-
-    // const [firstCanvas, secondCanvas] = $(".draw-area");
-    // Chart.defaults.global.defaultFontSize = 15;
-    // let myChart = new Chart(firstCanvas, {
-    //     type: 'line',
-    //     data: {
-    //         datasets: []
-    //     },
-    //     options: {
-    //         scales: {
-    //             xAxes: [{
-    //                 type: 'time',
-    //                 time: {
-    //                     unit: 'month'
-    //                 }
-    //             }],
-    //             yAxes: [{
-    //                 scaleLabel: {
-    //                     display: true,
-    //                     labelString: "Количество заболеваний",
-    //                 }
-    //             }]
+    // slider.noUiSlider.on('set', function() {
+    //     for(let i = 0, n = Time.length; i < n; ++i) {
+    //         if (Time[i][0] == selectedYear) {
+    //             Time[i][1] = slider.noUiSlider.get();
+    //             getInformationForDiagnosis();
     //         }
     //     }
     // });
@@ -259,8 +242,9 @@ $(document).ready(function () {
     }
 
     function generateRandomColor() {
-        return 'rgb(' + Math.floor(Math.random() * 256) + ', ' + Math.floor(Math.random() * 256) + ', ' + Math.floor(Math.random() * 256) + ')';
+        return 'rgba(' + Math.floor(Math.random() * 255) + ', ' + Math.floor(Math.random() * 255) + ', ' + Math.floor(Math.random() * 255) + ', 0.8)';
     }
+
     function findPeriodTime(time) {
         var minYear = void 0,
             maxYear = void 0,
@@ -327,16 +311,6 @@ $(document).ready(function () {
             $(".stat-table")[0].style.display = "";
             prepareDataForTable(jsonData);
         }
-
-        //TODO: вынести в отдельную функцию обновление canvas если выбран вид отображения График или Диаграмма
-        // chart.data.labels.length = 0;
-        // chart.data.datasets.length = 0;
-        // chart.update();
-        // chart.data.labels.push(... statData.labels);
-        // statData.datasets.forEach(function(item) {
-        //     chart.data.datasets.push(item);
-        // });
-        // chart.update();
     }
 
     // функция формирования лэйблов и данных для графиков
@@ -541,33 +515,76 @@ $(document).ready(function () {
 
     function prepareDataForTable(json) {
         var finishMarkup = "";
+        var month = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
         json.sort(function (a, b) {
             if (a['MKB_NAME'] > b['MKB_NAME']) {
                 return 1;
             }
-
             if (a['MKB_NAME'] < b['MKB_NAME']) {
                 return -1;
             }
 
-            return 0;
+            if (month[+a['CLOSE_MONTH'] - 1] > month[+b['CLOSE_MONTH'] - 1]) {
+                return 1;
+            }
+
+            if (month[+a['CLOSE_MONTH'] - 1] < month[+b['CLOSE_MONTH'] - 1]) {
+                return -1;
+            }
         });
         $(".draw-area").each(function (index, value) {
             value.style.display = "none";
         });
 
+        finishMarkup += "<caption style=\"margin-bottom: 10px; font-size: 17px;\">Статистика заболеваемости</caption>";
         finishMarkup += "<tr>";
-        finishMarkup += '<th>\u2116</th>';
+        finishMarkup += '<th style="color: rgb(255, 255, 255); background-color: rgb(0, 122, 170); font-size: 18px; padding: 7px;">\u2116</th>';
+
+        var fieldName = '';
         for (var key in json[0]) {
-            finishMarkup += '<th>' + key + '</th>';
+            switch (key) {
+                case 'CNT':
+                    fieldName = 'Количество заболевших';
+                    break;
+                case 'CLOSE_MONTH':
+                    fieldName = 'Месяц установления диагноза';
+                    break;
+                case 'CLOSE_YEAR':
+                    fieldName = 'Год установления диагноза';
+                    break;
+                case 'SEX':
+                    fieldName = 'Пол';
+                    break;
+            }
+
+            if (key != 'MKB_NAME') {
+                finishMarkup += '<th style="color: rgb(255, 255, 255); background-color: rgb(0, 122, 170); font-size: 18px; padding: 7px;">' + fieldName + '</th>';
+            }
         }
         finishMarkup += "</tr>";
 
+        var tempMkb = json[0]['MKB_NAME'];
+        var count = 1;
+        finishMarkup += '<tr><td style="background-color: rgb(221, 219, 221); font-size: 18px; padding: 7px;" colspan="' + Object.keys(json[0]).length + '">' + tempMkb + '</td></tr>';
         for (var i = 0; i < json.length; ++i) {
+            if (json[i]['MKB_NAME'] != tempMkb) {
+                tempMkb = json[i]['MKB_NAME'];
+                finishMarkup += '<tr><td style="background-color: rgb(221, 219, 221); font-size: 18px; padding: 7px;" colspan="' + Object.keys(json[i]).length + '">' + tempMkb + '</td></tr>';
+                count = 1;
+            }
+
             finishMarkup += "<tr>";
-            finishMarkup += '<td>' + (i + 1) + '</td>';
+            finishMarkup += '<td>' + count++ + '</td>';
             for (var _key in json[i]) {
-                finishMarkup += '<td>' + json[i][_key] + '</td>';
+                if (_key != 'MKB_NAME') {
+                    if (_key == 'SEX') {
+                        finishMarkup += '<td>' + (+json[i][_key] ? 'Мужчина' : 'Женщина') + '</td>';
+                    } else if (_key == 'CLOSE_MONTH') {
+                        finishMarkup += '<td>' + month[json[i][_key] - 1] + '</td>';
+                    } else {
+                        finishMarkup += '<td>' + json[i][_key] + '</td>';
+                    }
+                }
             }
             finishMarkup += "</tr>";
         }

@@ -1,12 +1,12 @@
 $block-color: #E2E1E0;
-$select-item: rgb(90, 212, 127);
+$select-item: rgba(90,212,127,0.5);
 // * {
 //     border: 1px solid rgb(56, 49, 49);
 // }
 
 body {
     // background-color: rgb(154, 192, 209);
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(255,255,255);
     font-family: "Ubuntu Mono", Tahoma, Arial, Helvetica, sans-serif;
     font-size: 15px; 
     margin: 0;
@@ -40,12 +40,12 @@ input[type] {
 .btn {
     font-size: 15px;
     font-family: "Ubuntu Mono";
-    background-color: rgb(0, 122, 170);
+    background-color: rgb(0,122,170);
     border-radius: 3px;
     box-sizing: border-box;
     padding: 5px 7px;
     transition: 0.3s ease;
-    color: rgb(255, 255, 255);
+    color: rgb(255,255,255);
     margin-bottom: 5px;
 
     -webkit-border-radius: 3px;
@@ -54,7 +54,7 @@ input[type] {
 
     &:hover {
         cursor: pointer;
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 8px rgba(0,0,0,0.8);
     }
 
     &:focus {
@@ -63,7 +63,7 @@ input[type] {
     }
 
     &:active {
-        background-color: rgb(1, 108, 150);
+        background-color: rgb(1,108,150);
     }
 }
 
@@ -75,10 +75,10 @@ input[type] {
     padding: 10px 5px;
     text-align: center;
 
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    -o-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    -o-box-shadow: 0 0 8px rgba(0,0,0,0.2);
 
     .graph-icon {
         margin-right: 20px;
@@ -124,10 +124,10 @@ input[type] {
                 margin-bottom: 10px;
 
                 &:hover {
-                    box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-                    -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-                    -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-                    -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+                    box-shadow: 0 0 10px rgba(109,165,238, 0.65);
+                    -webkit-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                    -moz-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                    -o-box-shadow: 0 0 10px rgba(109,165,238,0.65);
                 }
 
                 &:focus {
@@ -154,10 +154,10 @@ input[type] {
                 padding: 4px;
                 margin: 0 1px;
 
-                box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-                -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-                -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-                -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+                box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                -webkit-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                -moz-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                -o-box-shadow: 0 0 10px rgba(109,165,238,0.65);
                 
                 &:focus {
                     outline: none;
@@ -167,8 +167,8 @@ input[type] {
             }
 
             .wrong-age {
-                background-color: rgb(221, 105, 105);
-                color:  rgb(255, 255, 255);
+                background-color: rgb(221,105,105);
+                color:  rgb(255,255,255);
             }
 
             .additional-filters {
@@ -186,7 +186,7 @@ input[type] {
             .show {
                 display: block;
                 padding: 10px;
-                background-color: rgb(245, 241, 237);
+                background-color: rgb(245,241,237);
                 animation: fade 0.5s ease;
             }
         }
@@ -203,7 +203,7 @@ input[type] {
                 margin: 0;
 
                 .classes {
-                    color: rgb(53, 53, 53);
+                    color: rgb(53,53,53);
                     background-color: #00d0ff36;
                     text-align: left;
                     margin-bottom: 5px;
@@ -226,17 +226,16 @@ input[type] {
 
                 .list-item {
                     padding: 8px;
-                    background-color: rgb(245, 241, 237);
+                    background-color: rgb(245,241,237);
                     transition: 0.1s ease-in;
                     margin-bottom: 2px;
                     
                     &:hover {
                         cursor: pointer;
-                        background-color: rgb(90, 212, 127);;
-                        box-shadow: 0 0 8px rgba(0, 17, 255, 0.274);
-                        -webkit-box-shadow: 0 0 8px rgba(0, 17, 255, 0.274);
-                        -moz-box-shadow: 0 0 8px rgba(0, 17, 255, 0.274);
-                        -o-box-shadow: 0 0 8px rgba(0, 17, 255, 0.274);
+                        box-shadow: 0 0 8px rgb(0,122,170);
+                        -webkit-box-shadow: 0 0 8px rgb(0,122,170);
+                        -moz-box-shadow: 0 0 8px rgb(0,122,170);
+                        -o-box-shadow: 0 0 8px rgb(0,122,170);
                     }
                 }
 
@@ -262,12 +261,12 @@ input[type] {
 
         .selected-year {
             background-color: $select-item;
-            color: rgb(0, 0, 0);
+            color: rgb(0,0,0);
         }
 
         .current-year {
             margin: -2px -1px;
-            border: 2px solid rgb(255, 255, 255);
+            border: 2px solid rgb(0, 0, 0);
         }
 
         #slider-range {
@@ -308,7 +307,7 @@ input[type] {
         }
 
         .draw-area {
-            background-color: #fff;
+            background-color: rgb(255,255,255);
             min-height: 350px;
             margin-bottom: 10px;
 
@@ -321,9 +320,9 @@ input[type] {
             text-align: center;
             font-size: 16px;
             border-style: solid;
-            border-color: rgb(0, 117, 170);
+            border-color: rgb(0,117,170);
             border-collapse: collapse;
-            background-color: rgb(255, 255, 255);
+            background-color: rgb(255,255,255);
             overflow-y: scroll;
             
             td,
@@ -347,10 +346,10 @@ footer {
     font-size: 20px;
     height: 70px;
 
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-    -o-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    -o-box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
 
 /*************** animations *****************/

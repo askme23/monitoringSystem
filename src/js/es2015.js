@@ -29,14 +29,6 @@ $(document).ready(function() {
         }
       });
     
-    slider.noUiSlider.on('update', function() {
-        for(let i = 0, n = Time.length; i < n; ++i) {
-            if (Time[i][0] == selectedYear) {
-                Time[i][1] = slider.noUiSlider.get();
-                getInformationForDiagnosis();
-            }
-        }
-    });
     // slider.noUiSlider.on('set', function() {
     //     for(let i = 0, n = Time.length; i < n; ++i) {
     //         if (Time[i][0] == selectedYear) {
@@ -46,6 +38,41 @@ $(document).ready(function() {
     //     }
     // });
 
+    // if ($(this).hasClass("selected-year") && $(this).hasClass('current-year')) {
+    //     for(let i = 0; i < Time.length; ++i) {
+    //         if (Time[i][0] == e.target.innerHTML) {
+    //             Time.splice(i, 1);
+    //         }
+    //     }
+    //     $(this).removeClass('selected-year');
+    //     // slider.noUiSlider.set(['1', '12']);
+    //     getInformationForDiagnosis();
+    // } else if ($(this).hasClass("selected-year")) {
+    //     $(".current-year").removeClass("current-year");
+    //     $(this).addClass('current-year');
+
+    //     Time.forEach(function(item) {
+    //         if (item[0] == e.target.innerHTML) {
+    //             slider.noUiSlider.set([item[1][0], item[1][1]]);
+    //         }
+    //     });
+    // } else {
+    //     let arrOfTime = [];
+
+    //     slider.noUiSlider.set(['1', '12']);
+    //     selectedYear = e.target.innerHTML;
+    //     arrOfTime.push(selectedYear, slider.noUiSlider.get());
+    //     console.log(arrOfTime);
+    //     Time.push(arrOfTime);
+    //     Time.sort(function(a, b) {
+    //         return a[0] - b[0];
+    //     });
+    //     console.log(Time);
+    //     $(".current-year").removeClass("current-year");
+    //     $(this).addClass('selected-year current-year');
+    //     getInformationForDiagnosis();
+    // }
+    
     // навеешиваем события
     addEventOnFilters();
     addEventOnList();
@@ -173,6 +200,15 @@ $(document).ready(function() {
         });
     }
     
+    slider.noUiSlider.on('update', function() {
+        for(let i = 0, n = Time.length; i < n; ++i) {
+            if (Time[i][0] == selectedYear) {
+                Time[i][1] = slider.noUiSlider.get();
+                getInformationForDiagnosis();
+            }
+        }
+    });
+
     function addEventOnYears() {
         $(".graph .years button").click(function(e) {
             e.preventDefault();

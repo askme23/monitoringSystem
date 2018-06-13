@@ -81,6 +81,7 @@ input[type] {
     -o-box-shadow: 0 0 8px rgba(0,0,0,0.2);
 
     .graph-icon {
+        margin-top: 10px;
         margin-right: 20px;
         transition: 0.5s ease;
         
@@ -105,46 +106,147 @@ input[type] {
 
     .diseases {
         display: flex;
+        -webkit-flex: 1;
         justify-content: flex-start;
         flex-direction: column;
-        width: 30%;
-        -webkit-flex: 1;
+        width: 35%;
         margin-right: 20px;
 
         .filter {
-            padding: 10px;
+            position: relative;
+            padding: 10px 40px 10px 10px;
             margin-bottom: 10px;
         
-            .input-search {
-                display: inline-block;
-                width: 74%;
-                font-size: 14px;
+            .search-block {
+                position: relative;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                .input-search {
+                    display: inline-block;
+                    width: 80%;
+                    font-size: 14px;
+                    height: 25px;
+                    padding: 2px 5px;
+                    position: relative;
+                    margin-right: 10px;
+
+                    &:hover {
+                        box-shadow: 0 0 10px rgba(109,165,238, 0.65);
+                        -webkit-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                        -moz-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                        -o-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                    }
+    
+                    &:focus {
+                        outline: none;
+                        text-decoration: none;
+                        border: none;
+                    }
+    
+                    // &::after {
+                    //     content: "";
+                    //     display: block;
+                    //     background: url("../img/search.png") no-repeat;
+                    // }
+                }
+    
+                .btn-reset {
+                    position: absolute;
+                    font-size: 21px;
+                    left: 65%;
+                    color: #666;
+                    border: 0;
+                    padding: 0 6px;
+                    border-radius: 50%;
+                    background-color: rgb(255, 255, 255);
+                    transition: background 200ms;
+                    outline: none;
+
+                    &:hover {
+                        background-color: #eee;
+                    }
+                 }
+    
+                .btn-search {
+                    padding: 6px;
+                    margin: 0;
+                }
+            }
+            
+            .btn-help {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                width: 25px;
                 height: 25px;
-                padding: 2px 5px;
-                margin-bottom: 10px;
+                background-color: transparent;
+                background-image: url(../img/question.png);
+                background-repeat: no-repeat;
+                border-radius: 50%;
+                background-size: 25px 25px;
+                cursor: pointer;
+                box-shadow: 0 0 5px rgba(109,165,238, 0.8);
+                transition: box-shadow 0.2s ease-in;
 
                 &:hover {
-                    box-shadow: 0 0 10px rgba(109,165,238, 0.65);
-                    -webkit-box-shadow: 0 0 10px rgba(109,165,238,0.65);
-                    -moz-box-shadow: 0 0 10px rgba(109,165,238,0.65);
-                    -o-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                    box-shadow: 0px 0px 1px 10px rgba(109,165,238, 0.8);
                 }
-
-                &:focus {
-                    outline: none;
-                    text-decoration: none;
-                    border: none;
-                }
-
-                // &::after {
-                //     content: "";
-                //     display: block;
-                //     background: url("../img/search.png") no-repeat;
-                // }
+            }
+            
+            .back-disable {
+                display: none;
             }
 
-            .btn-search {
-                padding: 6px;
+            .back-disable.show {
+                position: absolute;
+                display: block;
+                left: 0;
+                top: 0;
+                background-color: rgba(109, 109, 109, 0.4);
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+                width: 100%;
+                height: 100%;
+                // нужно быть аккуратно с этм значением
+                z-index: 10000;
+                transition: box-shadow 0.2s ease-in;
+    
+                .message-box {
+                    position: absolute;
+                    top: 60px;
+                    right: calc(50% - 155px);
+                    font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
+                    font-size: 15px;
+                    color: rgba(255, 255, 255, 0.9);
+                    padding: 20px 20px 20px 20px;
+                    text-align: justify;
+                    width: 250px;
+                    border-radius: 5px;
+                    background-color: rgba(0, 0, 0, 0.5490196078431373);
+                    box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+                    
+                    button {
+                        position: absolute;
+                        right: 7px;
+                        top: 7px;
+                        margin: 0 auto;
+                        width: 14px;
+                        height: 14px;
+                        border-radius: 50%;
+                        background-color: transparent;
+                        background-position: center;
+                        padding: 1px;
+                        background-image: url(../img/close.png);
+                        background-size: 14px 14px;
+                        background-repeat: no-repeat;
+                        cursor: pointer
+                    }
+                }
+            }
+
+            .btn-filter {
+                margin: 10px 0;
             }
 
             .age {
@@ -153,16 +255,18 @@ input[type] {
                 width: 25px;
                 padding: 4px;
                 margin: 0 1px;
-
-                box-shadow: 0 0 10px rgba(109,165,238,0.65);
-                -webkit-box-shadow: 0 0 10px rgba(109,165,238,0.65);
-                -moz-box-shadow: 0 0 10px rgba(109,165,238,0.65);
-                -o-box-shadow: 0 0 10px rgba(109,165,238,0.65);
                 
                 &:focus {
                     outline: none;
                     text-decoration: none;
                     border: none;
+                }
+
+                &:hover {
+                    box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                    -webkit-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                    -moz-box-shadow: 0 0 10px rgba(109,165,238,0.65);
+                    -o-box-shadow: 0 0 10px rgba(109,165,238,0.65);
                 }
             }
 
@@ -175,20 +279,11 @@ input[type] {
                 display: none;
                 width: 90%;
                 
-                ul {
-                    list-style: none;
-                    text-decoration: none;
-                    padding: 0;
-                    margin: 0;
+                div {
+                    margin-top: 10px;
                 }
             }
 
-            .show {
-                display: block;
-                padding: 10px;
-                background-color: rgb(245,241,237);
-                animation: fade 0.5s ease;
-            }
         }
 
         .list {
@@ -248,11 +343,82 @@ input[type] {
 
     .graph {
         display: flex;
+        position: relative;
         justify-content: flex-start;
         flex-direction: column;
         padding: 15px;
-        width: 70%;
+        width: 65%;
         height: auto;
+
+        .btn-help {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 25px;
+            height: 25px;
+            background-color: transparent;
+            background-image: url(../img/question.png);
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            background-size: 25px 25px;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(109,165,238, 0.8);
+            transition: box-shadow 0.2s ease-in;
+
+            &:hover {
+                box-shadow: 0px 0px 1px 10px rgba(109,165,238, 0.8);
+            }
+        }
+        
+        .back-disable {
+            display: none;
+        }
+
+        .back-disable.show {
+            position: absolute;
+            display: block;
+            left: 0;
+            top: 0;
+            background-color: rgba(109, 109, 109, 0.4);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            height: 100%;
+            // нужно быть аккуратно с этм значением
+            z-index: 10000;
+            transition: box-shadow 0.2s ease-in;
+
+            .message-box {
+                position: absolute;
+                top: 200px;
+                right: calc(50% - 205px);
+                font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
+                font-size: 15px;
+                color: rgba(255, 255, 255, 0.9);
+                padding: 20px;
+                text-align: justify;
+                width: 350px;
+                border-radius: 5px;
+                background-color: rgba(0, 0, 0, 0.5490196078431373);
+                box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+                
+                button {
+                    position: absolute;
+                    right: 7px;
+                    top: 7px;
+                    margin: 0 auto;
+                    width: 14px;
+                    height: 14px;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    background-position: center;
+                    padding: 1px;
+                    background-image: url(../img/close.png);
+                    background-size: 14px 14px;
+                    background-repeat: no-repeat;
+                    cursor: pointer
+                }
+            }
+        }
 
         .years {
             text-align: center;
@@ -270,7 +436,8 @@ input[type] {
         }
 
         #slider-range {
-            margin: 10px 20px 50px;
+            margin: 15px auto 50px;
+            width: 500px;
         }
 
         .noUi-connect {
@@ -278,13 +445,13 @@ input[type] {
         }
 
         .noUi-horizontal {
-            height: 14px;
+            height: 12px;
         }
         
         .noUi-handle {
-            width: 21px;
-            height: 21px;
-            top: -6px;
+            width: 18px;
+            height: 18px;
+            top: -4px;
             border-radius: 50%;
             cursor: pointer;
         }
@@ -304,6 +471,8 @@ input[type] {
 
         .noUi-pips-horizontal {
             left: 7px;
+            color: rgb(0, 0, 0);
+            // color: rgb(0,122,170);
         }
 
         .draw-area {

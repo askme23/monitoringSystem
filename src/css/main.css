@@ -57,6 +57,7 @@ input[type] {
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   -o-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }
   .header .graph-icon {
+    margin-top: 10px;
     margin-right: 20px;
     transition: 0.5s ease; }
     .header .graph-icon:hover {
@@ -75,62 +76,135 @@ input[type] {
   width: 90%; }
   .container-main .diseases {
     display: flex;
+    -webkit-flex: 1;
     justify-content: flex-start;
     flex-direction: column;
-    width: 30%;
-    -webkit-flex: 1;
+    width: 35%;
     margin-right: 20px; }
     .container-main .diseases .filter {
-      padding: 10px;
+      position: relative;
+      padding: 10px 40px 10px 10px;
       margin-bottom: 10px; }
-      .container-main .diseases .filter .input-search {
-        display: inline-block;
-        width: 74%;
-        font-size: 14px;
+      .container-main .diseases .filter .search-block {
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center; }
+        .container-main .diseases .filter .search-block .input-search {
+          display: inline-block;
+          width: 80%;
+          font-size: 14px;
+          height: 25px;
+          padding: 2px 5px;
+          position: relative;
+          margin-right: 10px; }
+          .container-main .diseases .filter .search-block .input-search:hover {
+            box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+            -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+            -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+            -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65); }
+          .container-main .diseases .filter .search-block .input-search:focus {
+            outline: none;
+            text-decoration: none;
+            border: none; }
+        .container-main .diseases .filter .search-block .btn-reset {
+          position: absolute;
+          font-size: 21px;
+          left: 65%;
+          color: #666;
+          border: 0;
+          padding: 0 6px;
+          border-radius: 50%;
+          background-color: white;
+          transition: background 200ms;
+          outline: none; }
+          .container-main .diseases .filter .search-block .btn-reset:hover {
+            background-color: #eee; }
+        .container-main .diseases .filter .search-block .btn-search {
+          padding: 6px;
+          margin: 0; }
+      .container-main .diseases .filter .btn-help {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        width: 25px;
         height: 25px;
-        padding: 2px 5px;
-        margin-bottom: 10px; }
-        .container-main .diseases .filter .input-search:hover {
-          box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-          -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-          -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-          -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65); }
-        .container-main .diseases .filter .input-search:focus {
-          outline: none;
-          text-decoration: none;
-          border: none; }
-      .container-main .diseases .filter .btn-search {
-        padding: 6px; }
+        background-color: transparent;
+        background-image: url(../img/question.png);
+        background-repeat: no-repeat;
+        border-radius: 50%;
+        background-size: 25px 25px;
+        cursor: pointer;
+        box-shadow: 0 0 5px rgba(109, 165, 238, 0.8);
+        transition: box-shadow 0.2s ease-in; }
+        .container-main .diseases .filter .btn-help:hover {
+          box-shadow: 0px 0px 1px 10px rgba(109, 165, 238, 0.8); }
+      .container-main .diseases .filter .back-disable {
+        display: none; }
+      .container-main .diseases .filter .back-disable.show {
+        position: absolute;
+        display: block;
+        left: 0;
+        top: 0;
+        background-color: rgba(109, 109, 109, 0.4);
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        width: 100%;
+        height: 100%;
+        z-index: 10000;
+        transition: box-shadow 0.2s ease-in; }
+        .container-main .diseases .filter .back-disable.show .message-box {
+          position: absolute;
+          top: 60px;
+          right: calc(50% - 155px);
+          font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.9);
+          padding: 20px 20px 20px 20px;
+          text-align: justify;
+          width: 250px;
+          border-radius: 5px;
+          background-color: rgba(0, 0, 0, 0.5490196078);
+          box-shadow: 0 0 6px rgba(0, 0, 0, 0.8); }
+          .container-main .diseases .filter .back-disable.show .message-box button {
+            position: absolute;
+            right: 7px;
+            top: 7px;
+            margin: 0 auto;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: transparent;
+            background-position: center;
+            padding: 1px;
+            background-image: url(../img/close.png);
+            background-size: 14px 14px;
+            background-repeat: no-repeat;
+            cursor: pointer; }
+      .container-main .diseases .filter .btn-filter {
+        margin: 10px 0; }
       .container-main .diseases .filter .age {
         display: inline-block;
         font-size: 13px;
         width: 25px;
         padding: 4px;
-        margin: 0 1px;
-        box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-        -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-        -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
-        -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65); }
+        margin: 0 1px; }
         .container-main .diseases .filter .age:focus {
           outline: none;
           text-decoration: none;
           border: none; }
+        .container-main .diseases .filter .age:hover {
+          box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+          -webkit-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+          -moz-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65);
+          -o-box-shadow: 0 0 10px rgba(109, 165, 238, 0.65); }
       .container-main .diseases .filter .wrong-age {
         background-color: #dd6969;
         color: white; }
       .container-main .diseases .filter .additional-filters {
         display: none;
         width: 90%; }
-        .container-main .diseases .filter .additional-filters ul {
-          list-style: none;
-          text-decoration: none;
-          padding: 0;
-          margin: 0; }
-      .container-main .diseases .filter .show {
-        display: block;
-        padding: 10px;
-        background-color: #f5f1ed;
-        animation: fade 0.5s ease; }
+        .container-main .diseases .filter .additional-filters div {
+          margin-top: 10px; }
     .container-main .diseases .list {
       padding: 10px;
       overflow: auto; }
@@ -169,11 +243,69 @@ input[type] {
           background-color: rgba(90, 212, 127, 0.5); }
   .container-main .graph {
     display: flex;
+    position: relative;
     justify-content: flex-start;
     flex-direction: column;
     padding: 15px;
-    width: 70%;
+    width: 65%;
     height: auto; }
+    .container-main .graph .btn-help {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      width: 25px;
+      height: 25px;
+      background-color: transparent;
+      background-image: url(../img/question.png);
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      background-size: 25px 25px;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(109, 165, 238, 0.8);
+      transition: box-shadow 0.2s ease-in; }
+      .container-main .graph .btn-help:hover {
+        box-shadow: 0px 0px 1px 10px rgba(109, 165, 238, 0.8); }
+    .container-main .graph .back-disable {
+      display: none; }
+    .container-main .graph .back-disable.show {
+      position: absolute;
+      display: block;
+      left: 0;
+      top: 0;
+      background-color: rgba(109, 109, 109, 0.4);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      height: 100%;
+      z-index: 10000;
+      transition: box-shadow 0.2s ease-in; }
+      .container-main .graph .back-disable.show .message-box {
+        position: absolute;
+        top: 200px;
+        right: calc(50% - 205px);
+        font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        text-align: justify;
+        width: 350px;
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.5490196078);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.8); }
+        .container-main .graph .back-disable.show .message-box button {
+          position: absolute;
+          right: 7px;
+          top: 7px;
+          margin: 0 auto;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background-color: transparent;
+          background-position: center;
+          padding: 1px;
+          background-image: url(../img/close.png);
+          background-size: 14px 14px;
+          background-repeat: no-repeat;
+          cursor: pointer; }
     .container-main .graph .years {
       text-align: center; }
     .container-main .graph .selected-year {
@@ -183,15 +315,16 @@ input[type] {
       margin: -2px -1px;
       border: 2px solid black; }
     .container-main .graph #slider-range {
-      margin: 10px 20px 50px; }
+      margin: 15px auto 50px;
+      width: 500px; }
     .container-main .graph .noUi-connect {
       background-color: #1e7aaa; }
     .container-main .graph .noUi-horizontal {
-      height: 14px; }
+      height: 12px; }
     .container-main .graph .noUi-handle {
-      width: 21px;
-      height: 21px;
-      top: -6px;
+      width: 18px;
+      height: 18px;
+      top: -4px;
       border-radius: 50%;
       cursor: pointer; }
     .container-main .graph .noUi-handle:before,
@@ -202,7 +335,8 @@ input[type] {
     .container-main .graph .noUi-value {
       top: -1px; }
     .container-main .graph .noUi-pips-horizontal {
-      left: 7px; }
+      left: 7px;
+      color: black; }
     .container-main .graph .draw-area {
       background-color: white;
       min-height: 350px;

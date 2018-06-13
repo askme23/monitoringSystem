@@ -119,6 +119,10 @@ $(document).ready(function() {
             }
         });
     
+        $(".filter .btn-reset").click(function(e) {
+            $(".filter .input-search")[0].value = "";
+        });
+
         $(".filter .btn-search").click(function(e) { 
             e.preventDefault(); 
             let filterData = $('.filter .input-search')[0].value;
@@ -128,6 +132,19 @@ $(document).ready(function() {
             }
         });
     
+        // события для всплывающих подсказок
+        $(".btn-help").each(function(index) {
+            $(this).click(function(e) {
+                e.target.nextElementSibling.classList.toggle("show");
+            });
+        });
+
+        $(".message-box button").each(function(index) {
+            $(this).click(function(e) {
+                e.target.parentNode.parentNode.classList.toggle("show");
+            });
+        }); 
+
         function handlerForAge(context) {
             let lastSymbol = context.value.substr(-1, 1);        
     
@@ -135,7 +152,7 @@ $(document).ready(function() {
                 context.value = context.value.substr(0, context.value.length - 1);
             }
         }
-    
+
         $(".additional-filters .from").on('keyup keydown', function(e) {
             const target = e.target;
             const inputAgeTo = $(".additional-filters .to")[0];
@@ -152,10 +169,6 @@ $(document).ready(function() {
                 }
             }
     
-        });
-    
-        $(".view").on("change", function(e) {
-            getInformationForDiagnosis();
         });
 
         $(".additional-filters .to").on('keyup keydown', function(e) {
@@ -196,6 +209,10 @@ $(document).ready(function() {
     
         $(".filter .sex").change(function(e) {
             Sex = +(e.target.checked);
+            getInformationForDiagnosis();
+        });
+
+        $(".view").on("change", function(e) {
             getInformationForDiagnosis();
         });
     }
@@ -256,9 +273,9 @@ $(document).ready(function() {
     
     function getInformationForDiagnosis() {
         let view = '';
-        $(".view").each(function(index, value) {
-            if (value.checked) {
-                view = value.value;
+        Array.prototype.forEach.call($(".view")[0].options, function(item) {
+            if (item.selected) {
+                view = item.value;
             }
         });
 
@@ -311,8 +328,8 @@ $(document).ready(function() {
         let statData = [];
         let view = '';
 
-        $(".view").each(function(index, item) {
-            if (item.checked) {
+        Array.prototype.forEach.call($(".view")[0].options, function(item) {
+            if (item.selected) {
                 view = item.value;
             }
         });

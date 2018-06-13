@@ -22,14 +22,14 @@
     $connect2->query("alter session set NLS_DATE_FORMAT='dd.mm.yyyy'");
     
     $query = "select (select MKB_NAME from D_MKB10 where ID = d.MKB) MKB_NAME,
-                d.DC_OPENDATE,
-                d.DC_CLOSEDATE,
-                floor((sysdate - a.BIRTHDATE) / 365) as AGE,
-                a.SEX
-            from D_DISEASECASES d
-                join D_PERSMEDCARD pm on d.PATIENT = pm.ID
-                join D_AGENTS a on pm.AGENT = a.ID
-            where MKB is not null";
+                     d.DC_OPENDATE,
+                     d.DC_CLOSEDATE,
+                     floor((sysdate - a.BIRTHDATE) / 365) as AGE,
+                     a.SEX
+                from D_DISEASECASES d
+                     join D_PERSMEDCARD pm on d.PATIENT = pm.ID
+                     join D_AGENTS a on pm.AGENT = a.ID
+               where MKB is not null";
     $stmt = $connect1->query($query);
 
     try {

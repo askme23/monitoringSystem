@@ -214,7 +214,7 @@ input[type] {
         font-family: "Ubuntu Mono", Arial, Helvetica, sans-serif;
         font-size: 15px;
         padding: 4px 5px;
-        border: 1px solid #adadad;
+        border: 2px solid #adadad;
         border-radius: 3px;
         color: black; }
       .container-main .diseases .filter .additional-filters {

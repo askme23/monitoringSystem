@@ -42,41 +42,6 @@ $(document).ready(function () {
     //     }
     // });
 
-    // if ($(this).hasClass("selected-year") && $(this).hasClass('current-year')) {
-    //     for(let i = 0; i < Time.length; ++i) {
-    //         if (Time[i][0] == e.target.innerHTML) {
-    //             Time.splice(i, 1);
-    //         }
-    //     }
-    //     $(this).removeClass('selected-year');
-    //     // slider.noUiSlider.set(['1', '12']);
-    //     getInformationForDiagnosis();
-    // } else if ($(this).hasClass("selected-year")) {
-    //     $(".current-year").removeClass("current-year");
-    //     $(this).addClass('current-year');
-
-    //     Time.forEach(function(item) {
-    //         if (item[0] == e.target.innerHTML) {
-    //             slider.noUiSlider.set([item[1][0], item[1][1]]);
-    //         }
-    //     });
-    // } else {
-    //     let arrOfTime = [];
-
-    //     slider.noUiSlider.set(['1', '12']);
-    //     selectedYear = e.target.innerHTML;
-    //     arrOfTime.push(selectedYear, slider.noUiSlider.get());
-    //     console.log(arrOfTime);
-    //     Time.push(arrOfTime);
-    //     Time.sort(function(a, b) {
-    //         return a[0] - b[0];
-    //     });
-    //     console.log(Time);
-    //     $(".current-year").removeClass("current-year");
-    //     $(this).addClass('selected-year current-year');
-    //     getInformationForDiagnosis();
-    // }
-
     // навеешиваем события
     addEventOnFilters();
     addEventOnList();
@@ -139,13 +104,16 @@ $(document).ready(function () {
         // события для всплывающих подсказок
         $(".btn-help").each(function (index) {
             $(this).click(function (e) {
-                e.target.nextElementSibling.classList.toggle("show");
+                var scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, document.body.offsetHeight, document.documentElement.offsetHeight, document.body.clientHeight, document.documentElement.clientHeight);
+                $(".back-disable").css("height", scrollHeight).toggleClass("show-back");
+                e.target.nextElementSibling.classList.toggle("message-box-show");
             });
         });
 
-        $(".message-box button").each(function (index) {
+        $(".message-box-hide button").each(function (index) {
             $(this).click(function (e) {
-                e.target.parentNode.parentNode.classList.toggle("show");
+                e.target.parentNode.classList.toggle("message-box-show");
+                $(".back-disable").toggleClass("show-back");
             });
         });
 
@@ -219,41 +187,86 @@ $(document).ready(function () {
         });
     }
 
-    slider.noUiSlider.on('update', function () {
-        for (var i = 0, n = Time.length; i < n; ++i) {
-            if (Time[i][0] == selectedYear) {
-                Time[i][1] = slider.noUiSlider.get();
-                getInformationForDiagnosis();
-            }
-        }
-    });
-
     function addEventOnYears() {
+        // if ($(this).hasClass("selected-year") && $(this).hasClass('current-year')) {
+        //     for(let i = 0; i < Time.length; ++i) {
+        //         if (Time[i][0] == e.target.innerHTML) {
+        //             Time.splice(i, 1);
+        //         }
+        //     }
+        //     $(this).removeClass('selected-year');
+        //     // slider.noUiSlider.set(['1', '12']);
+        //     getInformationForDiagnosis();
+        // } else if ($(this).hasClass("selected-year")) {
+        //     $(".current-year").removeClass("current-year");
+        //     $(this).addClass('current-year');
+
+        //     Time.forEach(function(item) {
+        //         if (item[0] == e.target.innerHTML) {
+        //             slider.noUiSlider.set([item[1][0], item[1][1]]);
+        //         }
+        //     });
+        // } else {
+        //     let arrOfTime = [];
+
+        //     slider.noUiSlider.set(['1', '12']);
+        //     selectedYear = e.target.innerHTML;
+        //     arrOfTime.push(selectedYear, slider.noUiSlider.get());
+        //     console.log(arrOfTime);
+        //     Time.push(arrOfTime);
+        //     Time.sort(function(a, b) {
+        //         return a[0] - b[0];
+        //     });
+        //     console.log(Time);
+        //     $(".current-year").removeClass("current-year");
+        //     $(this).addClass('selected-year current-year');
+        //     getInformationForDiagnosis();
+        // }
+
         $(".graph .years button").click(function (e) {
             e.preventDefault();
 
-            $(".current-year").removeClass("current-year");
-
+            // $(".current-year").removeClass("current-year");
+            slider.noUiSlider.reset();
             if ($(this).hasClass("selected-year")) {
                 for (var i = 0; i < Time.length; ++i) {
                     if (Time[i][0] == e.target.innerHTML) {
-                        Time.splice(i, 1);
+                        if ($(this).hasClass("current-year")) {
+                            Time.splice(i, 1);
+                            $(this).toggleClass("selected-year");
+                        } else {
+                            slider.noUiSlider.set(Time[i][1]);
+                            $(".current-year").removeClass("current-year");
+                            $(this).addClass("current-year");
+                        }
                     }
                 }
             } else {
                 var arrOfTime = [];
+
+                slider.noUiSlider.set(['1', '12']);
                 selectedYear = e.target.innerHTML;
-                arrOfTime.push(selectedYear);
+                arrOfTime.push(selectedYear, slider.noUiSlider.get());
                 Time.push(arrOfTime);
                 Time.sort(function (a, b) {
                     return a[0] - b[0];
                 });
+                $(this).toggleClass("selected-year");
+                $(".current-year").removeClass("current-year");
+                $(this).toggleClass("current-year");
             }
+            console.log(Time);
 
-            $(this).toggleClass("selected-year");
-            $(this).toggleClass("current-year");
-            slider.noUiSlider.set(['1', '12']);
             getInformationForDiagnosis();
+        });
+
+        slider.noUiSlider.on('update', function () {
+            for (var i = 0, n = Time.length; i < n; ++i) {
+                if (Time[i][0] == selectedYear) {
+                    Time[i][1] = slider.noUiSlider.get();
+                    getInformationForDiagnosis();
+                }
+            }
         });
     }
 

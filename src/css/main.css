@@ -110,7 +110,7 @@ input[type] {
         .container-main .diseases .filter .search-block .btn-reset {
           position: absolute;
           font-size: 21px;
-          left: 65%;
+          left: 72%;
           color: #666;
           border: 0;
           padding: 0 6px;
@@ -127,61 +127,71 @@ input[type] {
         position: absolute;
         right: 5px;
         top: 5px;
-        width: 25px;
-        height: 25px;
+        width: 22px;
+        height: 22px;
         background-color: transparent;
         background-image: url(../img/question.png);
         background-repeat: no-repeat;
         border-radius: 50%;
-        background-size: 25px 25px;
+        background-size: 22px 22px;
         cursor: pointer;
         box-shadow: 0 0 5px rgba(109, 165, 238, 0.8);
         transition: box-shadow 0.2s ease-in; }
         .container-main .diseases .filter .btn-help:hover {
           box-shadow: 0px 0px 1px 10px rgba(109, 165, 238, 0.8); }
-      .container-main .diseases .filter .back-disable {
+      .container-main .diseases .filter .message-box-hide {
         display: none; }
-      .container-main .diseases .filter .back-disable.show {
+      .container-main .diseases .filter .message-box-show {
         position: absolute;
         display: block;
-        left: 0;
-        top: 0;
-        background-color: rgba(109, 109, 109, 0.4);
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-        width: 100%;
-        height: 100%;
-        z-index: 10000;
-        transition: box-shadow 0.2s ease-in; }
-        .container-main .diseases .filter .back-disable.show .message-box {
+        z-index: 300;
+        top: 120px;
+        right: calc(50% - 155px);
+        font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.9);
+        padding: 20px 20px 20px 20px;
+        text-align: justify;
+        width: 250px;
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.75);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.8); }
+        .container-main .diseases .filter .message-box-show button {
           position: absolute;
-          top: 60px;
-          right: calc(50% - 155px);
-          font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
-          font-size: 15px;
-          color: rgba(255, 255, 255, 0.9);
-          padding: 20px 20px 20px 20px;
-          text-align: justify;
-          width: 250px;
-          border-radius: 5px;
-          background-color: rgba(0, 0, 0, 0.5490196078);
-          box-shadow: 0 0 6px rgba(0, 0, 0, 0.8); }
-          .container-main .diseases .filter .back-disable.show .message-box button {
-            position: absolute;
-            right: 7px;
-            top: 7px;
-            margin: 0 auto;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: transparent;
-            background-position: center;
-            padding: 1px;
-            background-image: url(../img/close.png);
-            background-size: 14px 14px;
-            background-repeat: no-repeat;
-            cursor: pointer; }
+          right: 7px;
+          top: 7px;
+          margin: 0 auto;
+          width: 14px;
+          height: 14px;
+          border-radius: 50%;
+          background-color: transparent;
+          background-position: center;
+          padding: 1px;
+          background-image: url(../img/close.png);
+          background-size: 14px 14px;
+          background-repeat: no-repeat;
+          cursor: pointer; }
       .container-main .diseases .filter .btn-filter {
         margin: 10px 0; }
+      .container-main .diseases .filter .sex {
+        display: none; }
+      .container-main .diseases .filter .pseudo-checkbox {
+        display: inline-block;
+        position: relative;
+        width: 13px;
+        height: 13px;
+        border: 2px solid #adadad;
+        border-radius: 3px; }
+      .container-main .diseases .filter .sex:checked + .pseudo-checkbox::before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        bottom: 2px;
+        left: 2px;
+        background-color: #007aaa;
+        border-radius: 2px; }
       .container-main .diseases .filter .age {
         display: inline-block;
         font-size: 13px;
@@ -200,11 +210,22 @@ input[type] {
       .container-main .diseases .filter .wrong-age {
         background-color: #dd6969;
         color: white; }
+      .container-main .diseases .filter .view {
+        font-family: "Ubuntu Mono", Arial, Helvetica, sans-serif;
+        font-size: 15px;
+        padding: 4px 5px;
+        border: 1px solid #adadad;
+        border-radius: 3px;
+        color: black; }
       .container-main .diseases .filter .additional-filters {
         display: none;
-        width: 90%; }
+        width: 90%;
+        margin-right: 0; }
         .container-main .diseases .filter .additional-filters div {
           margin-top: 10px; }
+      .container-main .diseases .filter .show {
+        display: block;
+        padding: 10px; }
     .container-main .diseases .list {
       padding: 10px;
       overflow: auto; }
@@ -253,13 +274,13 @@ input[type] {
       position: absolute;
       right: 5px;
       top: 5px;
-      width: 25px;
-      height: 25px;
+      width: 22px;
+      height: 22px;
       background-color: transparent;
       background-image: url(../img/question.png);
       background-repeat: no-repeat;
       border-radius: 50%;
-      background-size: 25px 25px;
+      background-size: 22px 22px;
       cursor: pointer;
       box-shadow: 0 0 5px rgba(109, 165, 238, 0.8);
       transition: box-shadow 0.2s ease-in; }
@@ -267,45 +288,38 @@ input[type] {
         box-shadow: 0px 0px 1px 10px rgba(109, 165, 238, 0.8); }
     .container-main .graph .back-disable {
       display: none; }
-    .container-main .graph .back-disable.show {
+    .container-main .graph .message-box-hide {
+      display: none; }
+    .container-main .graph .message-box-show {
       position: absolute;
       display: block;
-      left: 0;
-      top: 0;
-      background-color: rgba(109, 109, 109, 0.4);
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-      width: 100%;
-      height: 100%;
-      z-index: 10000;
-      transition: box-shadow 0.2s ease-in; }
-      .container-main .graph .back-disable.show .message-box {
+      z-index: 300;
+      top: 100px;
+      right: calc(50% - 205px);
+      font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      text-align: justify;
+      width: 350px;
+      border-radius: 5px;
+      background-color: rgba(0, 0, 0, 0.75);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.8); }
+      .container-main .graph .message-box-show button {
         position: absolute;
-        top: 200px;
-        right: calc(50% - 205px);
-        font-family: "Ubuntu Mono", Arial, Tahoma, Helvetica, sans-serif;
-        font-size: 15px;
-        color: rgba(255, 255, 255, 0.9);
-        padding: 20px;
-        text-align: justify;
-        width: 350px;
-        border-radius: 5px;
-        background-color: rgba(0, 0, 0, 0.5490196078);
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.8); }
-        .container-main .graph .back-disable.show .message-box button {
-          position: absolute;
-          right: 7px;
-          top: 7px;
-          margin: 0 auto;
-          width: 14px;
-          height: 14px;
-          border-radius: 50%;
-          background-color: transparent;
-          background-position: center;
-          padding: 1px;
-          background-image: url(../img/close.png);
-          background-size: 14px 14px;
-          background-repeat: no-repeat;
-          cursor: pointer; }
+        right: 7px;
+        top: 7px;
+        margin: 0 auto;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: transparent;
+        background-position: center;
+        padding: 1px;
+        background-image: url(../img/close.png);
+        background-size: 14px 14px;
+        background-repeat: no-repeat;
+        cursor: pointer; }
     .container-main .graph .years {
       text-align: center; }
     .container-main .graph .selected-year {
@@ -372,6 +386,20 @@ footer {
   -webkit-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
   -o-box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }
+
+.back-disable {
+  display: none; }
+
+.back-disable.show-back {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  background-color: rgba(109, 109, 109, 0.4);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  z-index: 200;
+  transition: box-shadow 0.2s ease-in; }
 
 /*************** animations *****************/
 @keyframes fade {

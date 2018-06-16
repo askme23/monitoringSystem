@@ -17,9 +17,6 @@
             $this->password = $password;
         }
 
-        /**
-         *  @return dbConnect
-         */
         public function connect() {
             $tns = "(DESCRIPTION =
                         (ADDRESS = (PROTOCOL = TCP)(HOST = $this->host)(PORT = $this->port))

@@ -87,7 +87,7 @@
             </div>
         </aside>
         
-        <div class="graph block">
+        <main class="graph block">
             <div class="years">
                 <?php 
                     require_once 'php/DataBase.php';
@@ -123,8 +123,9 @@
                 </p>
                 <button></button>
             </div>
-        </div>
+        </main>
     </div>
+
     <footer>
         All rights reserved &copy; Gorelov Ruslan.
     </footer>             

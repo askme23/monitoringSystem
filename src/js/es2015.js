@@ -229,7 +229,8 @@ $(document).ready(function() {
             e.preventDefault();
 
             // $(".current-year").removeClass("current-year");
-            slider.noUiSlider.reset();
+            // slider.noUiSlider.reset();
+            let sliderValue = slider.noUiSlider.get();
             if ($(this).hasClass("selected-year")) {
                 for(let i = 0; i < Time.length; ++i) {
                     if (Time[i][0] == e.target.innerHTML) {
@@ -237,6 +238,7 @@ $(document).ready(function() {
                             Time.splice(i, 1);
                             $(this).toggleClass("selected-year");
                         } else {
+                            // slider.noUiSlider.reset();
                             slider.noUiSlider.set(Time[i][1]);
                             $(".current-year").removeClass("current-year");
                             $(this).addClass("current-year");
@@ -246,9 +248,11 @@ $(document).ready(function() {
             } else {
                 let arrOfTime = [];
 
-                slider.noUiSlider.set(['1', '12']);
+                slider.noUiSlider.reset();
                 selectedYear = e.target.innerHTML;
-                arrOfTime.push(selectedYear, slider.noUiSlider.get());
+                (function(val) {
+                    arrOfTime.push(selectedYear, val);
+                })(slider.noUiSlider.get());
                 Time.push(arrOfTime);
                 Time.sort(function(a, b) {
                     return a[0] - b[0];
@@ -257,7 +261,6 @@ $(document).ready(function() {
                 $(".current-year").removeClass("current-year");
                 $(this).toggleClass("current-year");
             }
-            console.log(Time);
     
             getInformationForDiagnosis();
         });
@@ -265,8 +268,12 @@ $(document).ready(function() {
         slider.noUiSlider.on('update', function() {
             for(let i = 0, n = Time.length; i < n; ++i) {
                 if (Time[i][0] == selectedYear) {
-                    Time[i][1] = slider.noUiSlider.get();
-            getInformationForDiagnosis();
+                    let sliderValue = slider.noUiSlider.get();
+                    (function(val) {
+                        Time[i][1] = val;
+                    })(sliderValue);
+                    
+                    getInformationForDiagnosis();
                 }
             }
         });

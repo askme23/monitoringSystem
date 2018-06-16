@@ -49,7 +49,7 @@
 
             $str = "";
             for($i = 0; $i < count($years); ++$i) {
-                $str .= "<button type=\"button\" class=\"btn\">" . $years[$i]['YEAR'] . "</button> \n";         
+                $str .= "<button type=\"button\" class=\"btn year\">" . $years[$i]['YEAR'] . "</button> \n";         
             }
 
             echo $str;

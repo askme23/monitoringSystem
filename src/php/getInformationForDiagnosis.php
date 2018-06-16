@@ -94,7 +94,7 @@
         } else {
             $query = "";
             
-            for($i = 0, $n = count($Time); $i < $n; $i++) {
+            for($i = 0, $n = count($Time); $i < $n; ++$i) {
                 setDisease();
                 setAgeAndSex();
                 $whereSelect .= " and extract(year from d.CLOSEDATE) = " . $Time[$i][0] . " and (extract(month from d.CLOSEDATE) >= " . (int)$Time[$i][1][0] . " and extract(month from d.CLOSEDATE) <= " . (int)$Time[$i][1][1] . ")";

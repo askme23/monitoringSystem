@@ -227,7 +227,8 @@ $(document).ready(function () {
             e.preventDefault();
 
             // $(".current-year").removeClass("current-year");
-            slider.noUiSlider.reset();
+            // slider.noUiSlider.reset();
+            var sliderValue = slider.noUiSlider.get();
             if ($(this).hasClass("selected-year")) {
                 for (var i = 0; i < Time.length; ++i) {
                     if (Time[i][0] == e.target.innerHTML) {
@@ -235,6 +236,7 @@ $(document).ready(function () {
                             Time.splice(i, 1);
                             $(this).toggleClass("selected-year");
                         } else {
+                            // slider.noUiSlider.reset();
                             slider.noUiSlider.set(Time[i][1]);
                             $(".current-year").removeClass("current-year");
                             $(this).addClass("current-year");
@@ -244,9 +246,11 @@ $(document).ready(function () {
             } else {
                 var arrOfTime = [];
 
-                slider.noUiSlider.set(['1', '12']);
+                slider.noUiSlider.reset();
                 selectedYear = e.target.innerHTML;
-                arrOfTime.push(selectedYear, slider.noUiSlider.get());
+                (function (val) {
+                    arrOfTime.push(selectedYear, val);
+                })(slider.noUiSlider.get());
                 Time.push(arrOfTime);
                 Time.sort(function (a, b) {
                     return a[0] - b[0];
@@ -261,11 +265,19 @@ $(document).ready(function () {
         });
 
         slider.noUiSlider.on('update', function () {
-            for (var i = 0, n = Time.length; i < n; ++i) {
+            var _loop = function _loop(i, n) {
                 if (Time[i][0] == selectedYear) {
-                    Time[i][1] = slider.noUiSlider.get();
+                    var sliderValue = slider.noUiSlider.get();
+                    (function (val) {
+                        Time[i][1] = val;
+                    })(sliderValue);
+
                     getInformationForDiagnosis();
                 }
+            };
+
+            for (var i = 0, n = Time.length; i < n; ++i) {
+                _loop(i, n);
             }
         });
     }
